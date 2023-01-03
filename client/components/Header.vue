@@ -61,7 +61,9 @@
       <v-btn icon @click="toggle_dark_mode">
         <v-icon>mdi-invert-colors</v-icon>
       </v-btn>
-      <span>Welcome! {{ getUserInfo.name }} {{ getUserInfo.surname }}</span>
+      <span v-if="isAuthenticated"
+        >Welcome! {{ getUserInfo.name }} {{ getUserInfo.surname }}</span
+      >
       <!-- <v-btn icon @click.stop="fixed = !fixed">
           <v-icon>mdi-minus</v-icon>
         </v-btn> -->

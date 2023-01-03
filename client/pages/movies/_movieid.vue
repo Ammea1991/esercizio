@@ -1,6 +1,6 @@
 <template>
   <!-- Loading -->
-  <Loading v-if="$fetchState.pending" />
+  <Loading v-if="showHideSpinner" />
 
   <!-- Movie Info -->
   <div v-else class="single-movie container">
@@ -38,7 +38,7 @@
         <p class="movie-fact">
           <span>Duration:</span> {{ movie.runtime }} minutes
         </p>
-        <p class="movie-fact">
+        <p v-if="movie.revenue" class="movie-fact">
           <span>Revenue:</span>
           {{
             movie.revenue.toLocaleString("en-us", {
@@ -58,12 +58,8 @@ import global from "~/mixins.js/global.js";
 
 export default {
   name: "singleMovie",
-  async fetch() {
-    await this.getSingleMovie();
-  },
-
+  mixins: [global],
   // delay for fetching
-  fetchDelay: 1000,
 
   head() {
     return {
@@ -75,6 +71,9 @@ export default {
     return {
       movie: "",
     };
+  },
+  mounted() {
+    this.getSingleMovie();
   },
   methods: {
     async getSingleMovie() {

@@ -18,7 +18,7 @@ export default {
       {
         hid: 'gtm-script1',
         src: "https://maps.googleapis.com/maps/api/js?key=AIzaSyBEEfWIb00rGqQGrcNfMd_513qOuarFKc8&libraries=places",
-        defer: true
+        defer: false
       },
     ],
     link: [

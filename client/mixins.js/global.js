@@ -5,9 +5,12 @@ import {
     ValidationObserver,
     ValidationProvider,
     setInteractionMode,
-} from "vee-validate";
-import { required, digits, email, max, regex } from "vee-validate/dist/rules";
-
+    required,
+    digits,
+    email,
+    max,
+    regex
+} from 'vee-validate/dist/vee-validate.full';
 
 setInteractionMode("eager");
 
@@ -44,6 +47,7 @@ export default {
         ValidationObserver,
     },
     data: () => ({
+        showHideSpinner: true,
         alert: { type: "error", show: false, message: "" },
         loginData: {
             email: "",
@@ -324,8 +328,15 @@ export default {
                 }, 6000);
             }
         },
+
     },
     async fetch() {
         await this.getUsers();
+    },
+    beforeCreate() {
+        this.showHideSpinner = true;
+    },
+    mounted() {
+        this.showHideSpinner = false;
     },
 }

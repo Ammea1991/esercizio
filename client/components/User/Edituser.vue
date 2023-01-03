@@ -256,11 +256,6 @@ export default {
       type: Object,
     },
   },
-  methods: {
-    async test() {
-      console.log(this.editedItem);
-    },
-  },
   mounted() {
     this.autocomplete = new google.maps.places.Autocomplete(
       this.$refs.autocomplete,
@@ -269,7 +264,6 @@ export default {
     this.autocomplete.addListener("place_changed", () => {
       let place = this.autocomplete.getPlace();
       let ac = place.address_components;
-      console.log(ac);
       let street_number = ac.find((o) => o.types.includes("street_number"));
       let route = ac.find((o) => o.types.includes("route"));
       let locality = ac.find((o) => o.types.includes("locality"));
@@ -281,8 +275,6 @@ export default {
       );
       let country = ac.find((o) => o.types.includes("country"));
       let postal_code = ac.find((o) => o.types.includes("postal_code"));
-
-      console.log(this.editedItem);
 
       this.editedItem.shipping_address = {
         country: country ? country.long_name : "",

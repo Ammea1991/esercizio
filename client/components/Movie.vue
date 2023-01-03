@@ -1,5 +1,5 @@
 <template>
-  <Loading v-if="$fetchState.pending" />
+  <Loading v-if="showHideSpinner" />
   <div v-else class="home">
     <v-alert
       outlined
