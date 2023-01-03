@@ -1,5 +1,14 @@
 <template>
-  <div>
+  <Loading v-if="$fetchState.pending" />
+  <div v-else>
+    <v-alert
+      dark
+      :value="alert.show"
+      dismissible
+      elevation="2"
+      :type="alert.type"
+      >{{ alert.message }}</v-alert
+    >
     <v-card class="pa-4">
       <Edituser
         :editedItem="editedItem"
@@ -12,15 +21,18 @@
 
 <script>
 import axios from "axios";
+import global from "~/mixins.js/global.js";
+
 export default {
   middleware: "auth", // it will use `isAuthenticated` middleware
+  mixins: [global],
   computed: {
     getUserInfo() {
       return this.$store.getters.getUserInfo;
     },
   },
   data: () => ({
-    users: [],
+    user: {},
     editedItem: {
       name: "",
       surname: "",
@@ -36,34 +48,7 @@ export default {
     },
   }),
   mounted() {
-    this.editedItem = Object.assign({}, this.$store.getters.getUserInfo);
-  },
-  methods: {
-    async editUser() {
-      await axios
-        .post("http://192.168.1.86:3001/api/auth/update", {
-          _id: this.editedItem._id,
-          user: this.editedItem,
-        })
-        .then((response) => {
-          this.alert = {
-            type: "success",
-            show: true,
-            message: response.data.message,
-          };
-          this.users.push(this.editedItem);
-          this.users.splice(this.editedIndex, 1);
-          this.dialogEdit = false;
-        })
-        .catch((error) => {
-          this.alert = {
-            type: "error",
-            show: true,
-            message: error.response.data.message,
-          };
-          return error;
-        });
-    },
+    this.getCurrentUser();
   },
 };
 </script>

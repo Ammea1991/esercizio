@@ -20,14 +20,17 @@ module.exports = function (app) {
 
     //USERS READ API
     app.get("/api/user", function (req, res) {
-        const email = req.query.email;
+        const email = req.query.email
+        console.log(email)
         User.findOne(
             {
                 email: email
             },
             (err, user) => {
-
-                res.send([user]);
+                console.log(user)
+                if (err) res.status(400).send({ message: err.message });
+                //res.send(user);
+                res.status(200).send({ user: user, message: `User ${user.name} ${user.surname} !` });
 
             });
     });

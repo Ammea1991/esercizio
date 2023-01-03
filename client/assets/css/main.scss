@@ -141,11 +141,11 @@ a {
 
   span {
     display: block;
-    width: 70px;
-    height: 70px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
-    border: 2px solid transparent;
-    border-top-color: #fff;
-    animation: circle-loading 1200ms ease infinite;
+    border: 5px solid transparent;
+    border-top-color: #CC0100;
+    animation: circle-loading 1000ms ease infinite;
   }
 }

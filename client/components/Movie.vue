@@ -1,5 +1,14 @@
 <template>
-  <div class="home">
+  <Loading v-if="$fetchState.pending" />
+  <div v-else class="home">
+    <v-alert
+      dark
+      :value="alert.show"
+      dismissible
+      elevation="2"
+      :type="alert.type"
+      >{{ alert.message }}</v-alert
+    >
     <!-- Movies -->
     <div class="container movies">
       <!-- Now Streaming  -->
@@ -65,26 +74,11 @@ import global from "~/mixins.js/global.js";
 export default {
   mixins: [global],
   data: () => ({
-    users: [],
     bookma: false,
     bookmark: [],
-    editedItem: {
-      name: "",
-      surname: "",
-      birth_date: "",
-      phone_number: "",
-      shipping_address: {},
-      codice_fiscale: "",
-      email: "",
-      created_at: new Date().toISOString(),
-      dark_theme: true,
-      password: "",
-      confirmpassword: "",
-    },
   }),
-  async fetch() {
-    await this.getMovies();
-    console.log(this.bookmark);
+  mounted() {
+    this.getMovies();
   },
   methods: {
     async addBookmark(param) {

@@ -14,6 +14,7 @@
               :error-messages="errors"
               clearable
               outlined
+              prepend-icon="mdi-account"
               label="Name"
             ></v-text-field>
           </validation-provider>
@@ -35,9 +36,10 @@
           </validation-provider>
         </v-col>
       </v-row>
-      <v-row><v-divider /></v-row>
+      <v-row><v-divider class="mt-6 mb-6" /></v-row>
       <v-row>
         <v-col
+          ><v-icon class="mr-2">mdi-map-marker</v-icon
           ><input
             ref="autocomplete"
             placeholder="Search for location"
@@ -99,7 +101,7 @@
           ></v-text-field
         ></v-col>
       </v-row>
-      <v-row><v-divider /></v-row>
+      <v-row><v-divider class="mt-6 mb-10" /></v-row>
       <v-row>
         <v-col
           ><validation-provider
@@ -117,6 +119,7 @@
               v-model="editedItem.phone_number"
               :counter="10"
               :error-messages="errors"
+              prepend-icon="mdi-cellphone"
               label="Phone Number"
               required
             ></v-text-field> </validation-provider
@@ -198,6 +201,7 @@
               :error-messages="errors"
               outlined
               clearable
+              prepend-icon="mdi-email"
               label="Email"
             ></v-text-field>
           </validation-provider>
@@ -269,13 +273,7 @@
               >Close</v-btn
             >
             <v-btn
-              v-if="$route.path != '/subscription'"
-              color="primary"
-              elevation="2"
-              @click="$emit('save-form-test')"
-              >Save test</v-btn
-            >
-            <v-btn
+              class="ml-5"
               color="primary"
               elevation="2"
               type="submit"
@@ -285,6 +283,7 @@
               clear
             </v-btn>
             <v-btn
+              class="ml-5"
               color="primary"
               elevation="2"
               type="submit"

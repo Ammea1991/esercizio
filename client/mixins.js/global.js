@@ -1,4 +1,5 @@
 import moment from "moment";
+import axios from "axios";
 import {
     extend,
     ValidationObserver,
@@ -43,7 +44,11 @@ export default {
         ValidationObserver,
     },
     data: () => ({
-
+        alert: { type: "error", show: false, message: "" },
+        loginData: {
+            email: "",
+            password: "",
+        },
         defaultItem: {
             name: "",
             surname: "",
@@ -103,6 +108,21 @@ export default {
         pagination: {},
     }),
     methods: {
+        async login() {
+            await this.$auth.loginWith("local", {
+                data: this.loginData,
+            }).then((response) => {
+                if (response)
+                    this.$router.push("/home");
+            }).catch((error) => {
+                this.alert = {
+                    type: "error",
+                    show: true,
+                    message: `${error.response.data.message}`,
+                };
+
+            })
+        },
         submit() {
             this.$refs.observer.validate();
         },
@@ -116,21 +136,29 @@ export default {
         },
         closeDialog() {
             this.show = false
-            // this.$nextTick(() => {
-            //     this.editedItem = Object.assign({}, this.defaultItem);
-            //     this.editedIndex = -1;
-            // });
         },
         async getMovies() {
-            const data = this.$axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=b8e3a8c9cfbc5262db03ad7f8a367a24')
-            const result = await data;
-            result.data.results.forEach((movie) => {
-                this.movies.push(movie)
-            });
-            console.log(this.movies)
+            await axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=b8e3a8c9cfbc5262db03ad7f8a367a24')
+                .then((response) => {
+                    console.log(response)
+                    this.alert = {
+                        type: "info",
+                        show: true,
+                        message: `${response.data.results.length} now streaming movies loaded`,
+                    };
+                    response.data.results.forEach((movie) => {
+                        this.movies.push(movie)
+                    });
+                }).catch((error) => {
+                    this.alert = {
+                        type: "error",
+                        show: true,
+                        message: error.message,
+                    };
+                });
         },
         async getProducts() {
-            await this.$axios
+            await axios
                 .get("http://192.168.1.86:3001/api/products", {})
                 .then(async (res) => {
                     console.log(res.data)
@@ -158,9 +186,24 @@ export default {
             return this.editedItem;
 
         },
-
+        async getCurrentUser() {
+            this.loading = true;
+            const params = { email: this.$store.getters.getUserInfo.email };
+            axios
+                .get("http://192.168.1.86:3001/api/user", { params })
+                .then(async (response) => {
+                    console.log(response);
+                    this.alert = {
+                        type: "info",
+                        show: true,
+                        message: response.data.message,
+                    };
+                    this.loading = false;
+                    this.editedItem = response.data.user;
+                });
+        },
         async getUsers() {
-            await this.$axios
+            await axios
                 .get("http://192.168.1.86:3001/api/users").then(async (res) => {
                     res.data.map((user) => {
                         user.created_at = moment(user.created_at).format(
@@ -176,7 +219,7 @@ export default {
         async subscribeUser() {
             this.closeDialog();
             var path = this.$route.path;
-            await this.$axios
+            await axios
                 .post("http://192.168.1.86:3001/api/auth/signup", {
                     user: this.editedItem,
                 })
@@ -191,7 +234,7 @@ export default {
         },
         async fetchData() {
             this.loading = true;
-            await this.$axios
+            await axios
                 .get("http://192.168.1.86:3001/api/users")
                 .then(async (res) => {
                     this.loading = false;
@@ -206,7 +249,7 @@ export default {
         async addUser() {
             this.closeDialog();
             var path = this.$route.path;
-            await this.$axios
+            await axios
                 .post("http://192.168.1.86:3001/api/auth/signup", {
                     user: this.editedItem,
                 })
@@ -222,9 +265,34 @@ export default {
                     return error;
                 });
         },
+        async editUser() {
+            await axios
+                .post("http://192.168.1.86:3001/api/auth/update", {
+                    _id: this.editedItem._id,
+                    user: this.editedItem,
+                })
+                .then((response) => {
+                    this.alert = {
+                        type: "success",
+                        show: true,
+                        message: response.data.message,
+                    };
+                    this.users.push(this.editedItem);
+                    this.users.splice(this.editedIndex, 1);
+                    this.dialogEdit = false;
+                })
+                .catch((error) => {
+                    this.alert = {
+                        type: "error",
+                        show: true,
+                        message: error.response.data.message,
+                    };
+                    return error;
+                });
+        },
         async editPsw() {
             this.closeDialog();
-            await this.$axios
+            await axios
                 .post("http://192.168.1.86:3001/api/auth/changePsw", {
                     email: this.editedItem.email,
                     password: this.editedItem.confirmpassword,
@@ -246,6 +314,15 @@ export default {
                     return error;
                 });
             this.users.splice(this.editedIndex, 1);
+        },
+    },
+    watch: {
+        alert(new_val) {
+            if (new_val) {
+                setTimeout(() => {
+                    this.alert.show = false;
+                }, 6000);
+            }
         },
     },
     async fetch() {

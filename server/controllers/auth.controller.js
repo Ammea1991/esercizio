@@ -38,7 +38,7 @@ exports.update = (req, res) => {
       return;
     }
     console.log("1 document updated");
-    res.status(200).send({ message: `User ${user.email} updated!` });
+    res.status(200).send({ message: `User ${body.email} updated!` });
   });
 };
 

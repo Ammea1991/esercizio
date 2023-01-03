@@ -93,17 +93,16 @@
       </template>
     </v-data-table>
     <v-dialog v-model="dialogCreate" max-width="800px">
-      <v-card class="pa-4">
+      <v-card class="pa-6">
         <CreateUser
           :editedItem="editedItem"
           @submit-form="createUser"
-          @save-form-test="createUser"
           @close-modal="dialogCreate = false"
         />
       </v-card>
     </v-dialog>
     <v-dialog v-model="dialogEdit" max-width="800px">
-      <v-card class="pa-4">
+      <v-card class="pa-6">
         <Edituser
           :editedItem="editedItem"
           @submit-form="editUser"
@@ -182,13 +181,6 @@ export default {
     },
   }),
   watch: {
-    alert(new_val) {
-      if (new_val) {
-        setTimeout(() => {
-          this.alert.show = false;
-        }, 8000);
-      }
-    },
     async search() {
       console.log(this.search);
       var result_search = "";

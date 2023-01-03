@@ -1,5 +1,13 @@
 <template>
   <form>
+    <v-alert
+      dark
+      :value="alert.show"
+      dismissible
+      elevation="2"
+      :type="alert.type"
+      >{{ alert.message }}</v-alert
+    >
     <!-- <Notification :message="error" v-if="error" /> -->
     <v-card class="ma-auto" max-width="500">
       <v-card-text>
@@ -66,55 +74,5 @@ import global from "~/mixins.js/global.js";
 
 export default {
   mixins: [global],
-  components: {
-    //Notification,
-  },
-
-  data: () => ({
-    alert: { type: "error", show: false, message: "" },
-    editedItem: {
-      email: "",
-      created_at: new Date().toISOString(),
-      roles: [],
-      defaultSelected: [],
-    },
-    defaultItem: {
-      email: "",
-      created_at: new Date().toISOString(),
-      roles: [],
-      defaultSelected: [],
-    },
-    loginData: {
-      email: "",
-      password: "",
-    },
-  }),
-
-  methods: {
-    close() {
-      this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-    async login() {
-      try {
-        let response = await this.$auth.loginWith("local", {
-          data: this.loginData,
-        });
-        this.$router.push("/home");
-        console.log(response);
-      } catch (err) {
-        console.log(err);
-      }
-      // await this.$axios.post("http://192.168.1.86:3001/api/auth/signin", {
-      //   email: this.editedItem.email,
-      //   password: this.editedItem.password,
-      // });
-
-      // this.$router.push("/home");
-    },
-  },
 };
 </script>
