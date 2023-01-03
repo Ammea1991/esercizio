@@ -46,7 +46,11 @@
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <v-list-item-title v-if="item.title == 'Profile'"
+                >{{ getUserInfo.name.substring(0, 1) }}.
+                {{ getUserInfo.surname }}</v-list-item-title
+              >
+              <v-list-item-title v-else>{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </template>
@@ -57,6 +61,7 @@
       <v-btn icon @click="toggle_dark_mode">
         <v-icon>mdi-invert-colors</v-icon>
       </v-btn>
+      <span>Welcome! {{ getUserInfo.name }} {{ getUserInfo.surname }}</span>
       <!-- <v-btn icon @click.stop="fixed = !fixed">
           <v-icon>mdi-minus</v-icon>
         </v-btn> -->
@@ -123,6 +128,9 @@ export default {
     },
   },
   computed: {
+    getUserInfo() {
+      return this.$store.getters.getUserInfo;
+    },
     isAuthenticated() {
       console.log("hello");
       console.log(this.$store.getters.isAuthenticated);

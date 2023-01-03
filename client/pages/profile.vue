@@ -2,10 +2,10 @@
   <Loading v-if="$fetchState.pending" />
   <div v-else>
     <v-alert
-      dark
+      outlined
       :value="alert.show"
       dismissible
-      elevation="2"
+      elevation="3"
       :type="alert.type"
       >{{ alert.message }}</v-alert
     >

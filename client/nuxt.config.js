@@ -103,7 +103,7 @@ export default {
           primary: '#CC0100',
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
+          info: '#2196F3',
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
@@ -112,7 +112,7 @@ export default {
           primary: '#CC0100',
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
+          info: '#2196F3',
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
