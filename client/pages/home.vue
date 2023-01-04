@@ -13,6 +13,7 @@
       class="usertable elevation-2"
       ref="myTable"
       :headers="header_users"
+      sort-by="email"
       :items="users"
       item-key="_id"
       :loading="loading"
