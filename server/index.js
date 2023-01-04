@@ -1,6 +1,3 @@
-//import usersRouter from './routes/mongo.js';
-//import apiRouter from './routes/api.js';
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -22,8 +19,7 @@ db.mongoose
 	});
 
 const app = express();
-const PORT = 3001;
-//app.use(bodyParser.urlencoded({extended:true}))
+const PORT = 3002;
 
 app.use(
 	cors({
@@ -43,7 +39,6 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// routes
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 

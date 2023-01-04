@@ -29,11 +29,6 @@ module.exports = function (app) {
     );
 
     app.post(
-        "/api/auth/verifyOld",
-        controller.verifyOld
-    );
-
-    app.post(
         "/api/auth/changePsw",
         controller.changePsw
     );

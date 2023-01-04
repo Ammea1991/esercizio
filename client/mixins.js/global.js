@@ -148,7 +148,7 @@ export default {
             this.loading = true;
             const params = { email: this.$store.getters.getUserInfo.email };
             axios
-                .get("http://192.168.1.86:3001/api/user", { params })
+                .get("http://192.168.1.86:3002/api/user", { params })
                 .then(async (response) => {
                     this.alert = {
                         type: "info",
@@ -162,7 +162,7 @@ export default {
         async getUsers() {
             this.loading = true;
             await axios
-                .get("http://192.168.1.86:3001/api/users").then(async (res) => {
+                .get("http://192.168.1.86:3002/api/users").then(async (res) => {
                     this.loading = false;
                     res.data.map((user) => {
                         user.created_at = moment(user.created_at).format(
@@ -179,7 +179,7 @@ export default {
             this.closeDialog();
             var path = this.$route.path;
             await axios
-                .post("http://192.168.1.86:3001/api/auth/signup", {
+                .post("http://192.168.1.86:3002/api/auth/signup", {
                     user: this.editedItem,
                 })
                 .then((response) => {
@@ -195,7 +195,7 @@ export default {
             this.closeDialog();
             var path = this.$route.path;
             await axios
-                .post("http://192.168.1.86:3001/api/auth/signup", {
+                .post("http://192.168.1.86:3002/api/auth/signup", {
                     user: this.editedItem,
                 })
                 .then((response) => {
@@ -212,7 +212,7 @@ export default {
         },
         async editUser() {
             await axios
-                .post("http://192.168.1.86:3001/api/auth/update", {
+                .post("http://192.168.1.86:3002/api/auth/update", {
                     _id: this.editedItem._id,
                     user: this.editedItem,
                 })
@@ -237,7 +237,7 @@ export default {
         },
         async editPsw() {
             await axios
-                .post("http://192.168.1.86:3001/api/auth/changePsw", {
+                .post("http://192.168.1.86:3002/api/auth/changePsw", {
                     email: this.editedItem.email,
                     password: this.editedItem.confirmpassword,
                 })

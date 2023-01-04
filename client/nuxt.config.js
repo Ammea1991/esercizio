@@ -83,7 +83,7 @@ export default {
     }
   },
   axios: {
-    baseURL: "http://192.168.1.86:3001"  // here set your API url
+    baseURL: "http://192.168.1.86:3002"  // here set your API url
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

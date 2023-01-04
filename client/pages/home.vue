@@ -219,7 +219,7 @@ export default {
     getFromSearch() {
       const params = { q: this.search };
       return this.$axios
-        .get("http://192.168.1.86:3001/api/users/search", { params })
+        .get("http://192.168.1.86:3002/api/users/search", { params })
         .then(function (response) {
           var result = response.data;
           return result;
@@ -234,7 +234,7 @@ export default {
     },
     async createUser() {
       await axios
-        .post("http://192.168.1.86:3001/api/auth/signup", {
+        .post("http://192.168.1.86:3002/api/auth/signup", {
           user: this.editedItem,
         })
         .then((response) => {
@@ -257,7 +257,7 @@ export default {
     },
     async editUser() {
       await axios
-        .post("http://192.168.1.86:3001/api/auth/update", {
+        .post("http://192.168.1.86:3002/api/auth/update", {
           _id: this.editedItem._id,
           user: this.editedItem,
         })
@@ -282,7 +282,7 @@ export default {
     },
     async deleteUser() {
       await axios
-        .post("http://192.168.1.86:3001/api/auth/delete", {
+        .post("http://192.168.1.86:3002/api/auth/delete", {
           _id: this.editedItem._id,
           email: this.editedItem.email,
         })
