@@ -54,7 +54,7 @@
                 <v-card elevation="0" class="pa-2 mr-auto">
                   <v-btn
                     color="primary"
-                    :to="{ name: 'movies-movieid', params: { id: movie.id } }"
+                    :to="{ name: 'movies-id', params: { id: movie.id } }"
                   >
                     More Info +
                   </v-btn>
