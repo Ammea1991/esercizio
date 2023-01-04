@@ -129,6 +129,18 @@ describe('Logo', () => {
         expect(wrapper.vm).toBeTruthy()
     })
 
+    test('Test Header Component', () => {
+        const wrapper = vueContext.vueTestUtils.mount(Header, {
+            vuetify: vueContext.vuetifyInstance,
+            stubs: {
+                NuxtLink: RouterLinkStub
+            }
+        })
+
+        //expect(wrapper.text()).toMatch('Logo')
+        expect(wrapper.vm).toBeTruthy()
+    })
+
     test('Test Editpassword Component', () => {
         const wrapper = vueContext.vueTestUtils.mount(Editpassword, {
             vuetify: vueContext.vuetifyInstance,

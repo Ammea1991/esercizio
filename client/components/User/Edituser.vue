@@ -32,7 +32,6 @@
               clearable
               outlined
               label="Surname"
-              :rules="[rules.required]"
             ></v-text-field>
           </validation-provider>
         </v-col>

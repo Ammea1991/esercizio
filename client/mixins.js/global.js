@@ -84,15 +84,7 @@ export default {
             { text: "Codice fiscale", value: "codice_fiscale", filterable: true },
             { text: "", value: "actions", sortable: false },
         ],
-        showModalAdd: false,
-        showModalEdit: false,
-        showModalDelete: false,
         alert: { type: "error", show: false, message: "" },
-        page: 1,
-        pageCount: 0,
-        itemsPerPage: 5,
-        search: "",
-        defaultSelected: [],
         users: [],
         dialog: false,
         dialogDelete: false,
@@ -104,12 +96,8 @@ export default {
         show_psw: false,
         show_confpsw: false,
         movies: [],
-        rules: {
-            required: (value) => !!value || "Required.",
-        },
         totalUsers: 0,
         loading: true,
-        pagination: {},
     }),
     methods: {
         async login() {
@@ -131,11 +119,7 @@ export default {
             this.$refs.observer.validate();
         },
         clear() {
-            this.editedItem.name = "";
-            this.editedItem.surname = "";
-            this.editedItem.phoneNumber = "";
-            this.editedItem.email = "";
-            this.keep_for_shipping = null;
+            this.editedItem = {};
             this.$refs.observer.reset();
         },
         closeDialog() {
@@ -144,7 +128,6 @@ export default {
         async getMovies() {
             await axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=b8e3a8c9cfbc5262db03ad7f8a367a24')
                 .then((response) => {
-                    console.log(response)
                     this.alert = {
                         type: "info",
                         show: true,
@@ -161,42 +144,12 @@ export default {
                     };
                 });
         },
-        async getProducts() {
-            await axios
-                .get("http://192.168.1.86:3001/api/products", {})
-                .then(async (res) => {
-                    console.log(res.data)
-                    this.products = res.data;
-                });
-        },
-        async addItem() {
-            this.editedItem = Object.assign({}, this.defaultItem);
-            this.showModalAdd = true;
-        },
-        async editItem(item) {
-            this.defaultSelected = [];
-            this.editedIndex = this.users.indexOf(item);
-            this.editedItem = Object.assign({}, item);
-            console.log(`EditedItem test: ${JSON.stringify(this.editedItem)}`)
-            this.showModalEdit = true;
-            //return this.editedItem;
-        },
-        async deleteItem(item) {
-            this.defaultSelected = [];
-            this.editedIndex = this.users.indexOf(item);
-            this.editedItem = Object.assign({}, item);
-            console.log(`EditedItem test: ${this.editedItem.email}`)
-            this.showModalDelete = true;
-            return this.editedItem;
-
-        },
         async getCurrentUser() {
             this.loading = true;
             const params = { email: this.$store.getters.getUserInfo.email };
             axios
                 .get("http://192.168.1.86:3001/api/user", { params })
                 .then(async (response) => {
-                    console.log(response);
                     this.alert = {
                         type: "info",
                         show: true,
@@ -207,8 +160,10 @@ export default {
                 });
         },
         async getUsers() {
+            this.loading = true;
             await axios
                 .get("http://192.168.1.86:3001/api/users").then(async (res) => {
+                    this.loading = false;
                     res.data.map((user) => {
                         user.created_at = moment(user.created_at).format(
                             "YYYY-MM-DD"
@@ -234,20 +189,6 @@ export default {
                 })
                 .catch((error) => {
                     return error;
-                });
-        },
-        async fetchData() {
-            this.loading = true;
-            await axios
-                .get("http://192.168.1.86:3001/api/users")
-                .then(async (res) => {
-                    this.loading = false;
-                    res.data.map((user) => {
-                        user.created_at = moment(user.created_at).format(
-                            "YYYY-MM-DD HH:mm:ss"
-                        );
-                    });
-                    this.users = res.data;
                 });
         },
         async addUser() {
@@ -326,7 +267,6 @@ export default {
                 }, 6000);
             }
         },
-
     },
     async fetch() {
         await this.getUsers();

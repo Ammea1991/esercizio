@@ -1,7 +1,6 @@
 <template>
-  <!-- <Loading v-if="$fetchState.pending" />
-  <div data-app v-else> -->
-  <div>
+  <Loading v-if="showHideSpinner" />
+  <div v-else>
     <v-alert
       outlined
       :value="alert.show"
@@ -28,9 +27,8 @@
       <template v-slot:expanded-item="{ headers, item }">
         <td :colspan="headers.length">
           <v-data-table
-            flat
             dense
-            class="usertable mb-8 elevation-0"
+            class="usertable mb-8 pa-2"
             ref="myTable"
             :headers="header_extra_info_users"
             :items="[item]"
@@ -92,16 +90,25 @@
         >
       </template>
     </v-data-table>
-    <v-dialog v-model="dialogCreate" max-width="800px">
+    <v-dialog
+      transition="fade-transition"
+      v-model="dialogCreate"
+      max-width="800px"
+    >
       <v-card class="pa-6">
         <CreateUser
+          transition="fade-transition"
           :editedItem="editedItem"
           @submit-form="createUser"
           @close-modal="dialogCreate = false"
         />
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogEdit" max-width="800px">
+    <v-dialog
+      transition="fade-transition"
+      v-model="dialogEdit"
+      max-width="800px"
+    >
       <v-card class="pa-6">
         <Edituser
           :editedItem="editedItem"
@@ -146,17 +153,14 @@
 <script>
 import axios from "axios";
 import global from "~/mixins.js/global.js";
-import moment from "moment";
 
 export default {
   name: "DataTable",
   middleware: "auth",
   mixins: [global],
-  components: {
-    //CustomSelect,
-  },
   data: () => ({
     alert: { type: "error", show: false, message: "" },
+    search: "",
     page: 1,
     pageCount: 0,
     itemsPerPage: 10,
@@ -182,25 +186,22 @@ export default {
   }),
   watch: {
     async search() {
-      console.log(this.search);
       var result_search = "";
       if (this.search.length > 2) {
         result_search = await this.getFromSearch();
         if (!result_search.length) this.users = [];
       }
-      //if (!result_search.length) this.users = [];
       if (result_search.length > 0 && result_search !== undefined)
         this.users = result_search;
-      if (!this.search.length) this.fetchData();
+      if (!this.search.length) this.getUsers();
     },
   },
   methods: {
     handleExpansion(item, state) {
       const itemIndex = this.expanded.indexOf(item);
-
       state ? this.expanded.splice(itemIndex, 1) : this.expanded.push(item);
     },
-    async addItem() {
+    addItem() {
       this.editedItem = Object.assign({}, this.defaultItem);
       this.dialogCreate = true;
     },
@@ -220,42 +221,39 @@ export default {
       return this.$axios
         .get("http://192.168.1.86:3001/api/users/search", { params })
         .then(function (response) {
-          console.log(`response.data: ${JSON.stringify(response.data)}`);
           var result = response.data;
           return result;
         })
         .catch(function (error) {
-          //handle error
-          console.log(error);
+          this.alert = {
+            type: "error",
+            show: true,
+            message: error.message,
+          };
         });
     },
     async createUser() {
-      if (this.editedIndex > -1) {
-        console.log(this.editedItem);
-        Object.assign(this.users[this.editedIndex], this.editedItem);
-      } else {
-        await axios
-          .post("http://192.168.1.86:3001/api/auth/signup", {
-            user: this.editedItem,
-          })
-          .then((response) => {
-            this.alert = {
-              type: "success",
-              show: true,
-              message: response.data.message,
-            };
-            this.users.push(this.editedItem);
-            this.dialogCreate = false;
-          })
-          .catch((error) => {
-            this.alert = {
-              type: "error",
-              show: true,
-              message: error.response.data.message,
-            };
-            return error;
-          });
-      }
+      await axios
+        .post("http://192.168.1.86:3001/api/auth/signup", {
+          user: this.editedItem,
+        })
+        .then((response) => {
+          this.alert = {
+            type: "success",
+            show: true,
+            message: response.data.message,
+          };
+          this.users.push(this.editedItem);
+          this.dialogCreate = false;
+        })
+        .catch((error) => {
+          this.alert = {
+            type: "error",
+            show: true,
+            message: error.response.data.message,
+          };
+          return error;
+        });
     },
     async editUser() {
       await axios
@@ -286,6 +284,7 @@ export default {
       await axios
         .post("http://192.168.1.86:3001/api/auth/delete", {
           _id: this.editedItem._id,
+          email: this.editedItem.email,
         })
         .then((response) => {
           this.alert = {
@@ -305,21 +304,9 @@ export default {
           return error;
         });
     },
-    async fetchData() {
-      this.loading = true;
-      axios.get("http://192.168.1.86:3001/api/users").then(async (res) => {
-        this.loading = false;
-        res.data.map((user) => {
-          user.created_at = moment(user.created_at).format(
-            "YYYY-MM-DD HH:mm:ss"
-          );
-        });
-        this.users = res.data;
-      });
-    },
   },
   mounted() {
-    this.fetchData();
+    this.getUsers();
   },
 };
 </script>

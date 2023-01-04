@@ -10,7 +10,17 @@ select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   border: none;
   -webkit-text-fill-color: var(--color);
-  transition: background-color 5000s ease-in-out 0s;
+  transition: background-color 4500s ease-in-out 0s;
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.7s;
+}
+
+.page-enter,
+.page-leave-to{
+  opacity: 0;
 }
 
 :root {
@@ -23,7 +33,6 @@ select:-webkit-autofill:focus {
   --bg-color-button: RGB(204, 1, 0);
   --btn-primary: #CC0100;
 }
-
 
 .dark-mode {
   --color: #ebf4f1;
@@ -111,8 +120,12 @@ a {
     font-size: 1rem !important;
     color: #CC0100 !important;
   }
-  /*background-color: #5c0b0b22;*/
 }
+
+.v-data-table > .v-data-table__wrapper tbody tr.v-data-table__expanded__content{
+  box-shadow: none !important;
+}
+
 .loading {
   height: 100vh;
   width: 100%;

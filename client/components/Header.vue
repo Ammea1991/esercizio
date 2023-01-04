@@ -8,7 +8,7 @@
       app
     >
       <v-list>
-        <template v-if="!isAuthenticated">
+        <template v-if="!this.$store.state.auth.loggedIn">
           <v-list-item class="nav-item" to="/login">
             <v-list-item-action>
               <v-icon>mdi-login</v-icon>
@@ -61,7 +61,7 @@
       <v-btn icon @click="toggle_dark_mode">
         <v-icon>mdi-invert-colors</v-icon>
       </v-btn>
-      <span v-if="isAuthenticated"
+      <span v-if="this.$store.state.auth.loggedIn"
         >Welcome! {{ getUserInfo.name }} {{ getUserInfo.surname }}</span
       >
       <!-- <v-btn icon @click.stop="fixed = !fixed">
@@ -134,7 +134,7 @@ export default {
       return this.$store.getters.getUserInfo;
     },
     isAuthenticated() {
-      return this.$store.getters.isAuthenticated; // it check if user isAuthenticated
+      return this.$store.state.auth.loggedIn; // it check if user isAuthenticated
     },
   },
 };

@@ -5,7 +5,4 @@ export const getters = {
     getUserInfo(state) {
         return state.auth.user;
     },
-    getProductsInfo(state) {
-        return state.auth.products;
-    }
 };

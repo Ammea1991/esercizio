@@ -10,7 +10,7 @@
       :type="alert.type"
       >{{ alert.message }}</v-alert
     >
-    <v-card class="pa-4">
+    <v-card class="pa-4" flat>
       <Edituser
         :editedItem="editedItem"
         @submit-form="editUser"

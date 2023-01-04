@@ -11,7 +11,7 @@ exports.delete = (req, res) => {
     .exec((err, user) => {
       if (err) throw err;
       console.log("1 document deleted");
-      res.status(200).send({ message: `User ${user.email} deleted!` });
+      res.status(200).send({ message: `User ${req.body.email} deleted!` });
     });
 };
 

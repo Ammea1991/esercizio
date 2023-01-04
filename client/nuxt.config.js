@@ -74,13 +74,8 @@ export default {
           property: "user",
           autoFetch: true
         },
-        //      refreshToken: {  // it sends request automatically when the access token expires, and its expire time has set on the Back-end and does not need to we set it here, because is useless
-        //        property: "refresh_token", // property name that the Back-end sends for you as a refresh token for saving on localStorage and cookie of user browser
-        //        data: "refresh_token", // data can be used to set the name of the property you want to send in the request.
-        //      },
         endpoints: {
           login: { url: "/api/auth/signin", method: "post" },
-          //        refresh: { url: "/api/auth/refresh-token", method: "post" },
           logout: false, //  we don't have an endpoint for our logout in our API and we just remove the token from localstorage
           user: { url: "/api/auth/user", method: "get" }
         }
@@ -88,8 +83,6 @@ export default {
     }
   },
   axios: {
-    // extra config e.g
-    // BaseURL: 'https://link-to-API'
     baseURL: "http://192.168.1.86:3001"  // here set your API url
   },
 
