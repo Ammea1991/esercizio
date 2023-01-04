@@ -327,11 +327,6 @@ export default {
       required: true,
     },
   },
-  methods: {
-    async test() {
-      console.log(this.editedItem);
-    },
-  },
   mounted() {
     this.autocomplete = new google.maps.places.Autocomplete(
       this.$refs.autocomplete,
@@ -368,11 +363,6 @@ export default {
       };
       console.log(this.editedItem.shipping_address);
     });
-  },
-  async fetch() {
-    // await this.getRegione();
-    // await this.getProvincia();
-    // await this.getComune();
   },
 };
 </script>

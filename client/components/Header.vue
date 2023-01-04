@@ -134,8 +134,6 @@ export default {
       return this.$store.getters.getUserInfo;
     },
     isAuthenticated() {
-      console.log("hello");
-      console.log(this.$store.getters.isAuthenticated);
       return this.$store.getters.isAuthenticated; // it check if user isAuthenticated
     },
   },

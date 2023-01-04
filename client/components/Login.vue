@@ -59,7 +59,7 @@
               <nuxt-link to="/subscription">Do not have an account?</nuxt-link>
             </v-col>
             <v-col align="right">
-              <nuxt-link to="/changepassword">Recover your password </nuxt-link>
+              <nuxt-link to="/changepassword">Change your password </nuxt-link>
             </v-col>
           </v-row>
         </v-container>

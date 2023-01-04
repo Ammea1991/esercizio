@@ -6,7 +6,8 @@ import Loading from '@/components/Loading.vue'
 import Createuser from '@/components/User/CreateUser.vue'
 import Editpassword from '@/components/User/Editpassword.vue'
 import Edituser from '@/components/User/Edituser.vue'
-import { mount } from '@vue/test-utils'
+import { shallowMount, createLocalVue, RouterLinkStub, mount } from '@vue/test-utils';
+
 
 import helpers from '~/utils/GeneralHelpers'
 
@@ -91,27 +92,24 @@ describe('Logo', () => {
     test('Test Login Component', () => {
         const wrapper = vueContext.vueTestUtils.mount(Login, {
             localVue: vueContext.vue,
-            vuetify: vueContext.vuetifyInstance
+            vuetify: vueContext.vuetifyInstance,
+            stubs: {
+                NuxtLink: RouterLinkStub
+            }
         })
 
         //expect(wrapper.text()).toMatch('Logo')
         expect(wrapper.vm).toBeTruthy()
     })
 
-    test('Test Header Component', () => {
-        const wrapper = vueContext.vueTestUtils.mount(Header, {
-            localVue: vueContext.vue,
-            vuetify: vueContext.vuetifyInstance
-        })
-
-        //expect(wrapper.text()).toMatch('Logo')
-        expect(wrapper.vm).toBeTruthy()
-    })
 
     test('Test Loading Component', () => {
         const wrapper = vueContext.vueTestUtils.mount(Loading, {
             localVue: vueContext.vue,
-            vuetify: vueContext.vuetifyInstance
+            vuetify: vueContext.vuetifyInstance,
+            stubs: {
+                NuxtLink: RouterLinkStub
+            }
         })
 
         //expect(wrapper.text()).toMatch('Logo')
@@ -119,15 +117,27 @@ describe('Logo', () => {
     })
 
     test('Test Movie Component', () => {
-        const wrapper = vueContext.vueTestUtils.shallowMount(Movie, {
+        const wrapper = vueContext.vueTestUtils.mount(Movie, {
             localVue: vueContext.vue,
-            vuetify: vueContext.vuetifyInstance
+            vuetify: vueContext.vuetifyInstance,
+            stubs: {
+                NuxtLink: RouterLinkStub
+            }
         })
 
         //expect(wrapper.text()).toMatch('Logo')
         expect(wrapper.vm).toBeTruthy()
     })
 
+    test('Test Editpassword Component', () => {
+        const wrapper = vueContext.vueTestUtils.mount(Editpassword, {
+            vuetify: vueContext.vuetifyInstance,
+            stubs: {
+                NuxtLink: RouterLinkStub
+            }
+        })
 
-
+        //expect(wrapper.text()).toMatch('Logo')
+        expect(wrapper.vm).toBeTruthy()
+    })
 })

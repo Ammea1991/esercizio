@@ -58,6 +58,7 @@ import global from "~/mixins.js/global.js";
 
 export default {
   name: "singleMovie",
+  middleware: "auth",
   mixins: [global],
   // delay for fetching
 

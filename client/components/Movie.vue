@@ -70,9 +70,13 @@
 
 <script>
 import global from "~/mixins.js/global.js";
+import Loading from "~/components/Loading";
 
 export default {
   mixins: [global],
+  components: {
+    Loading,
+  },
   data: () => ({
     bookma: false,
     bookmark: [],

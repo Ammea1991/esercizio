@@ -2,10 +2,9 @@
   <validation-observer ref="observer" v-slot="{ invalid }">
     <v-form
       ref="form"
-      v-model="valid"
       lazy-validation
-      @submit.prevent="$emit('submit-form', form)"
-      @close.prevent="$emit('close-form', form)"
+      @submit.prevent="$emit('submit-form')"
+      @close.prevent="$emit('close-form')"
     >
       <v-row>
         <v-col>

@@ -295,7 +295,6 @@ export default {
                 });
         },
         async editPsw() {
-            this.closeDialog();
             await axios
                 .post("http://192.168.1.86:3001/api/auth/changePsw", {
                     email: this.editedItem.email,
@@ -307,7 +306,6 @@ export default {
                         show: true,
                         message: response.data.message,
                     };
-                    this.$fetch()
                 })
                 .catch((error) => {
                     this.alert = {
