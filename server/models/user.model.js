@@ -25,7 +25,5 @@ const User = mongoose.model(
         }]
     }).index({ '$**': 'text' })
 );
-//User.index({ name: 'text', surname: 'text', birth_date: 'text', phone_number: 'text', nome: 'text', address: 'text', codice_fiscale: 'text', email: 'text' });
-//User.index({name: 'text', 'regione.nome': 'text'});
 
 module.exports = User;

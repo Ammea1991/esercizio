@@ -11,11 +11,12 @@ select:-webkit-autofill:focus {
   border: none;
   -webkit-text-fill-color: var(--color);
   transition: background-color 4500s ease-in-out 0s;
+  background-color: transparent !important;
 }
 
 .page-enter-active,
 .page-leave-active {
-  transition: opacity 0.7s;
+  transition: opacity 0.5s;
 }
 
 .page-enter,

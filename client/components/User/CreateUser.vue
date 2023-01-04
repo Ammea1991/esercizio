@@ -36,7 +36,7 @@
           </validation-provider>
         </v-col>
       </v-row>
-      <v-row><v-divider class="mt-6 mb-6" /></v-row>
+      <v-row><v-divider class="mt-2 mb-4" /></v-row>
       <v-row>
         <v-col
           ><v-icon class="mr-2">mdi-map-marker</v-icon
@@ -101,7 +101,7 @@
           ></v-text-field
         ></v-col>
       </v-row>
-      <v-row><v-divider class="mt-6 mb-10" /></v-row>
+      <v-row><v-divider class="mt-2 mb-6" /></v-row>
       <v-row>
         <v-col
           ><validation-provider
@@ -272,16 +272,6 @@
               @click="$emit('close-modal')"
               >Close</v-btn
             >
-            <v-btn
-              class="ml-5"
-              color="primary"
-              elevation="2"
-              type="submit"
-              :disabled="invalid"
-              @click="clear"
-            >
-              clear
-            </v-btn>
             <v-btn
               class="ml-5"
               color="primary"

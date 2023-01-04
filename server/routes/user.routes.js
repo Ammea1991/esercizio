@@ -1,6 +1,4 @@
-const controller = require("../controllers/user.controller");
 const db = require("../models");
-
 const User = db.user;
 
 module.exports = function (app) {
@@ -11,8 +9,6 @@ module.exports = function (app) {
         );
         next();
     });
-
-    app.get("/api/auth/all", controller.allAccess);
 
     //USERS READ API
     app.get("/api/user", function (req, res) {

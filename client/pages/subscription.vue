@@ -11,6 +11,7 @@
 import global from "~/mixins.js/global.js";
 
 export default {
+  mixins: [global],
   data() {
     return {
       editedItem: {
@@ -29,6 +30,5 @@ export default {
       },
     };
   },
-  mixins: [global],
 };
 </script>

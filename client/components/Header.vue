@@ -58,7 +58,7 @@
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click="toggle_dark_mode">
+      <v-btn icon @click="toggleTheme">
         <v-icon>mdi-invert-colors</v-icon>
       </v-btn>
       <span v-if="this.$store.state.auth.loggedIn"
@@ -88,11 +88,6 @@ export default {
           to: "/profile",
         },
         {
-          icon: "mdi-movie-open",
-          title: "Movies",
-          to: "/streaming",
-        },
-        {
           icon: "mdi-home",
           title: "Home",
           to: "/home",
@@ -105,28 +100,20 @@ export default {
     };
   },
   mounted() {
-    const theme = localStorage.getItem("dark_theme");
-    if (theme) {
-      if (theme === "true") {
-        this.$vuetify.theme.dark = true;
-      } else {
-        this.$vuetify.theme.dark = false;
-      }
-    } else if (
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-    ) {
+    if (localStorage.dark_theme === "true") {
       this.$vuetify.theme.dark = true;
-      localStorage.setItem("dark_theme", this.$vuetify.theme.dark.toString());
+    } else {
+      this.$vuetify.theme.dark = false;
     }
   },
   methods: {
-    toggle_dark_mode: function () {
+    toggleTheme() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-      localStorage.setItem("dark_theme", this.$vuetify.theme.dark.toString());
+      localStorage.dark_theme = this.$vuetify.theme.dark;
+      this.$store.commit("TOGGLE_THEME", this.$vuetify.theme.dark);
     },
     async logout() {
-      await this.$auth.logout(); // this method will logout the user and make token to false on the local storage of the user browser
+      await this.$auth.logout(); // this method will logout the user and make token not valid
     },
   },
   computed: {

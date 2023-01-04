@@ -26,8 +26,8 @@ export default {
     ]
   },
   server: {
-    port: 8002,
-    host: '192.168.1.86'
+    port: 3000,
+    host: 'localhost'
   },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
@@ -83,7 +83,7 @@ export default {
     }
   },
   axios: {
-    baseURL: "http://192.168.1.86:3002"  // here set your API url
+    baseURL: "http://localhost:3002"  // here set your API url
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

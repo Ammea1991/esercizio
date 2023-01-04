@@ -101,7 +101,7 @@
           ></v-text-field
         ></v-col>
       </v-row>
-      <v-row><v-divider /></v-row>
+      <v-row><v-divider class="mt-2 mb-4" /></v-row>
       <v-row>
         <v-col
           ><validation-provider
@@ -223,16 +223,6 @@
               elevation="2"
               type="submit"
               :disabled="invalid"
-              @click="clear"
-            >
-              clear
-            </v-btn>
-            <v-btn
-              class="ml-5"
-              color="primary"
-              elevation="2"
-              type="submit"
-              :disabled="invalid"
               >Submit
             </v-btn>
           </v-col>
@@ -249,7 +239,6 @@ export default {
   name: "Edituser",
   middleware: "auth",
   mixins: [global],
-
   props: {
     editedItem: {
       type: Object,

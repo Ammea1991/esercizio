@@ -21,17 +21,11 @@
 </template>
 
 <script>
-import axios from "axios";
 import global from "~/mixins.js/global.js";
 
 export default {
-  middleware: "auth", // it will use `isAuthenticated` middleware
+  middleware: "auth",
   mixins: [global],
-  computed: {
-    getUserInfo() {
-      return this.$store.getters.getUserInfo;
-    },
-  },
   data: () => ({
     user: {},
     editedItem: {

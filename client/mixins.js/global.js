@@ -118,32 +118,10 @@ export default {
         submit() {
             this.$refs.observer.validate();
         },
-        clear() {
-            this.editedItem = {};
-            this.$refs.observer.reset();
-        },
         closeDialog() {
             this.show = false
         },
-        async getMovies() {
-            await axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=b8e3a8c9cfbc5262db03ad7f8a367a24')
-                .then((response) => {
-                    this.alert = {
-                        type: "info",
-                        show: true,
-                        message: `${response.data.results.length} now streaming movies loaded`,
-                    };
-                    response.data.results.forEach((movie) => {
-                        this.movies.push(movie)
-                    });
-                }).catch((error) => {
-                    this.alert = {
-                        type: "error",
-                        show: true,
-                        message: error.message,
-                    };
-                });
-        },
+
         async getCurrentUser() {
             this.loading = true;
             const params = { email: this.$store.getters.getUserInfo.email };

@@ -21,10 +21,6 @@ import global from "~/mixins.js/global.js";
 
 export default {
   mixins: [global],
-  components: {
-    //Notification,
-  },
-
   data: () => ({
     alert: { type: "error", show: false, message: "" },
     editedItem: {

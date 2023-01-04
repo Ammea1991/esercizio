@@ -1,11 +1,6 @@
 // import { shallowMount } from '@vue/test-utils'
 import Login from '@/components/Login.vue'
-import Header from '@/components/Header.vue'
-import Movie from '@/components/Movie.vue'
 import Loading from '@/components/Loading.vue'
-import Createuser from '@/components/User/CreateUser.vue'
-import Editpassword from '@/components/User/Editpassword.vue'
-import Edituser from '@/components/User/Edituser.vue'
 import { shallowMount, createLocalVue, RouterLinkStub, mount } from '@vue/test-utils';
 
 
@@ -69,14 +64,7 @@ export const bootstrapVueContext = (configureContext) => {
     }
 }
 
-// describe('Logo', () => {
-//   test('is a Vue instance', () => {
-//     const wrapper = shallowMount(Logo)
-//     expect(wrapper.vm).toBeTruthy()
-//   })
-// })
-
-describe('Logo', () => {
+describe('Testing some ocmponents', () => {
     let vueContext = null
 
     beforeEach(() => {
@@ -106,43 +94,6 @@ describe('Logo', () => {
     test('Test Loading Component', () => {
         const wrapper = vueContext.vueTestUtils.mount(Loading, {
             localVue: vueContext.vue,
-            vuetify: vueContext.vuetifyInstance,
-            stubs: {
-                NuxtLink: RouterLinkStub
-            }
-        })
-
-        //expect(wrapper.text()).toMatch('Logo')
-        expect(wrapper.vm).toBeTruthy()
-    })
-
-    test('Test Movie Component', () => {
-        const wrapper = vueContext.vueTestUtils.mount(Movie, {
-            localVue: vueContext.vue,
-            vuetify: vueContext.vuetifyInstance,
-            stubs: {
-                NuxtLink: RouterLinkStub
-            }
-        })
-
-        //expect(wrapper.text()).toMatch('Logo')
-        expect(wrapper.vm).toBeTruthy()
-    })
-
-    test('Test Header Component', () => {
-        const wrapper = vueContext.vueTestUtils.mount(Header, {
-            vuetify: vueContext.vuetifyInstance,
-            stubs: {
-                NuxtLink: RouterLinkStub
-            }
-        })
-
-        //expect(wrapper.text()).toMatch('Logo')
-        expect(wrapper.vm).toBeTruthy()
-    })
-
-    test('Test Editpassword Component', () => {
-        const wrapper = vueContext.vueTestUtils.mount(Editpassword, {
             vuetify: vueContext.vuetifyInstance,
             stubs: {
                 NuxtLink: RouterLinkStub

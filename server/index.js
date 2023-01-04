@@ -45,7 +45,3 @@ require('./routes/user.routes')(app);
 app.get('/', (req, res) => { res.send("hello from my iliad server"); });
 
 app.listen(PORT, () => { console.log(`Running on portss: http://localhost:${PORT}`); });
-
-//! command list save life:
-//pm2 kill
-//rm -rf ~/.pm2 

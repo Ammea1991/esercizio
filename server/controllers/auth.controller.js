@@ -126,7 +126,7 @@ exports.changePsw = (req, res) => {
       res.status(500).send({ message: err });
       return;
     }
-    res.status(200).send({ message: "Password cambiata con successo" });
+    res.status(200).send({ message: "Password changed!" });
   });
 };
 
