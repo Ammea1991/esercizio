@@ -1,14 +1,14 @@
 <template>
   <!-- <Notification :message="error" v-if="error" /> -->
-
-  <v-card class="pa-2">
-    <CreateUser :editedItem="editedItem" @submit-form="subscribeUser" />
-  </v-card>
+  <div>
+    <Stepform :editedItem="editedItem" @submit-form="subscribeUser" />
+  </div>
 </template>
 
 <script>
 //import Notification from "~/components/Notification";
 import global from "~/mixins.js/global.js";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   mixins: [global],
@@ -19,8 +19,15 @@ export default {
         surname: "",
         birth_date: "",
         phone_number: "",
-        address: {},
-        shipping_address: {},
+        shipping_address: {
+          country: "",
+          region: "",
+          province: "",
+          locality: "",
+          route: "",
+          street_number: "",
+          postal_code: "",
+        },
         codice_fiscale: "",
         email: "",
         created_at: new Date().toISOString(),
@@ -29,6 +36,19 @@ export default {
         confirmpassword: "",
       },
     };
+  },
+  methods: {
+    ...mapActions({
+      resetMyStep: "step/resetMyStep",
+    }),
+    testReset() {
+      this.resetMyStep();
+    },
+  },
+  beforeRouteLeave(to, from, next) {
+    this.editedItem = Object.assign({}, this.defaultItem);
+    this.resetMyStep();
+    next();
   },
 };
 </script>

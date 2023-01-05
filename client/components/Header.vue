@@ -52,28 +52,53 @@
         </template>
       </v-list>
     </v-navigation-drawer>
+
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn icon @click="toggleTheme">
         <v-icon>mdi-invert-colors</v-icon>
       </v-btn>
-      <!-- <v-btn icon @click.stop="fixed = !fixed">
-          <v-icon>mdi-minus</v-icon>
-        </v-btn> -->
-      <!-- <v-toolbar-title>{{ title }}</v-toolbar-title> -->
       <v-spacer />
+      <v-img
+        :lazy-src="logo"
+        width="50"
+        max-height="50"
+        max-width="50"
+        :src="logo"
+      ></v-img>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-btn icon @click.stop="miniVariant = !miniVariant">
+        <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
+      </v-btn>
+      <v-btn icon @click.stop="clipped = !clipped">
+        <v-icon>mdi-application</v-icon>
+      </v-btn>
+      <v-btn icon @click.stop="fixed = !fixed">
+        <v-icon>mdi-minus</v-icon>
+      </v-btn>
+
+      <v-spacer />
+      <!-- <v-btn icon @click.stop="fixed = !fixed">
+        <v-icon>mdi-minus</v-icon>
+      </v-btn> -->
+      <!-- <v-toolbar-title>{{ title }}</v-toolbar-title> -->
     </v-app-bar>
   </div>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
   name: "Header",
   data() {
     return {
-      clipped: false,
+      miniVariant: false,
+      right: false,
+      rightDrawer: false,
+      clipped: true,
       drawer: false,
       fixed: false,
+      logo: require("@/static/logo.png"),
       items: [
         {
           icon: "mdi-account",
@@ -86,9 +111,6 @@ export default {
           to: "/home",
         },
       ],
-      miniVariant: false,
-      right: false,
-      rightDrawer: false,
       title: "Ec Meazza",
     };
   },

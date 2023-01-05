@@ -1,10 +1,10 @@
 <template>
   <!-- <v-card
-      class="pa-2"
-      v-bind:class="{ 'fade-in': local_step === 2 }"
-      v-if="local_step === 2"
-      v-show="local_step === 2"
-    > -->
+        class="pa-2"
+        v-bind:class="{ 'fade-in': local_step === 2 }"
+        v-if="local_step === 2"
+        v-show="local_step === 2"
+      > -->
   <v-card class="pa-2">
     <v-card-title class="font-italic flex-column">
       Shipping address
@@ -12,9 +12,8 @@
     <v-card-text>
       <v-row>
         <v-col cols="12" sm="12">
-          <input type="text" ref="inputGoogle" />
           <input
-            ref="autocomplete"
+            ref="googleAutocomplete"
             placeholder="Search for location"
             class="search-location"
             onfocus="value = ''"
@@ -77,34 +76,6 @@
         </v-col>
       </v-row>
     </v-card-text>
-
-    <v-card-actions class="centered-button">
-      <v-btn
-        v-if="$route.path != '/subscription' && $route.path != '/profile'"
-        large
-        color="primary"
-        elevation="2"
-        @click="$emit('close-modal')"
-        >Close</v-btn
-      >
-      <v-btn
-        @click.prevent="prev()"
-        large
-        class="arrow-prev"
-        color="primary"
-        elevation="2"
-        >Previous</v-btn
-      >
-      <v-btn
-        @click.prevent="next()"
-        large
-        class="arrow-next"
-        color="primary"
-        elevation="2"
-      >
-        Next
-      </v-btn>
-    </v-card-actions>
   </v-card>
 </template>
 
@@ -130,19 +101,10 @@ export default {
     },
   },
   mounted() {
-    const input = this.$refs.inputGoogle;
+    const input = this.$refs.googleAutocomplete;
     const autocomplete = new google.maps.places.Autocomplete(input);
 
     autocomplete.addListener("place_changed", () => {
-      // Esegui il test del servizio di autocomplete di Google Maps qui
-    });
-
-    this.autocomplete = new google.maps.places.Autocomplete(
-      this.$refs.autocomplete,
-      { types: ["geocode"] }
-    );
-    this.autocomplete.addListener("place_changed", () => {
-      debugger;
       let place = this.autocomplete.getPlace();
       let ac = place.address_components;
       console.log(ac);
@@ -171,41 +133,50 @@ export default {
         street_number: street_number ? street_number.long_name : "",
         postal_code: postal_code ? postal_code.long_name : "",
       };
-      console.log(this.editedItem.shipping_address);
     });
+
+    // this.autocomplete = new google.maps.places.Autocomplete(
+    //   this.$refs.autocomplete,
+    //   { types: ["geocode"] }
+    // );
+    // this.autocomplete.addListener("place_changed", () => {
+    //   debugger;
+
+    //   console.log(this.editedItem.shipping_address);
+    // });
   },
 };
 </script>
 <!-- 
-<template>
-  <v-autocomplete
-    v-model="location"
-    :items="locations"
-    :search-input.sync="search"
-    item-text="description"
-    item-value="place_id"
-    :loading="loading"
-  ></v-autocomplete>
-</template>
-
-<script>
-  export default {
-    data() {
-      return {
-        location: null,
-        locations: [],
-        search: '',
-        loading: false
-      }
-    },
-    watch: {
-      search(val) {
-        this.loading = true;
-        // Esegui la ricerca con l'autocomplete di Google Maps qui
-        // Popola la proprietà "locations" con i risultati ottenuti
-        this.loading = false;
+  <template>
+    <v-autocomplete
+      v-model="location"
+      :items="locations"
+      :search-input.sync="search"
+      item-text="description"
+      item-value="place_id"
+      :loading="loading"
+    ></v-autocomplete>
+  </template>
+  
+  <script>
+    export default {
+      data() {
+        return {
+          location: null,
+          locations: [],
+          search: '',
+          loading: false
+        }
+      },
+      watch: {
+        search(val) {
+          this.loading = true;
+          // Esegui la ricerca con l'autocomplete di Google Maps qui
+          // Popola la proprietà "locations" con i risultati ottenuti
+          this.loading = false;
+        }
       }
     }
-  }
-</script>
- -->
+  </script>
+   -->

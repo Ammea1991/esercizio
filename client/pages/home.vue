@@ -91,48 +91,83 @@
       </template>
     </v-data-table>
     <v-dialog
-      transition="fade-transition"
       v-model="dialogCreate"
       max-width="800px"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
     >
-      <v-card class="pa-6">
-        <CreateUser
+      <!-- <v-card class="pa-6">
+       <CreateUser
           transition="fade-transition"
+          :editedItem="editedItem"
+          @submit-form="createUser"
+          @close-modal="dialogCreate = false"
+        /> 
+        
+      </v-card>-->
+      <v-card>
+        <Stepform
           :editedItem="editedItem"
           @submit-form="createUser"
           @close-modal="dialogCreate = false"
         />
       </v-card>
     </v-dialog>
+
     <v-dialog
-      transition="fade-transition"
+      transition="dialog-bottom-transition"
       v-model="dialogEdit"
+      fullscreen
+      hide-overlay
       max-width="800px"
     >
-      <v-card class="pa-6">
+      <!-- <v-card class="pa-6">
         <Edituser
+          :editedItem="editedItem"
+          @submit-form="editUser"
+          @close-modal="dialogEdit = false"
+        />
+      </v-card> -->
+      <v-card>
+        <Stepform
           :editedItem="editedItem"
           @submit-form="editUser"
           @close-modal="dialogEdit = false"
         />
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogDelete" max-width="800px">
+    <v-dialog
+      v-model="dialogDelete"
+      max-width="800px"
+      transition="dialog-bottom-transition"
+      fullscreen
+      hide-overlay
+    >
       <v-card class="pa-4">
         <v-card-title class="text-h5"
           >Are you sure you want to delete {{ editedItem.email }}?</v-card-title
         >
         <v-card-actions>
-          <v-row>
-            <v-col class="mr-2" align="right">
-              <v-btn color="primary" elevation="2" @click="dialogDelete = false"
-                >Close</v-btn
-              >
-              <v-btn color="primary" elevation="2" @click="deleteUser"
-                >Ok</v-btn
-              >
-            </v-col>
-          </v-row>
+          <v-btn
+            large
+            width="20%"
+            class="mr-5 arrow-prev"
+            color="primary"
+            elevation="2"
+            @click="dialogDelete = false"
+            >Close</v-btn
+          >
+          <v-spacer />
+          <v-btn
+            large
+            width="20%"
+            class="mr-5 arrow-prev"
+            color="primary"
+            elevation="2"
+            @click="deleteUser"
+            >Ok</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -153,6 +188,7 @@
 <script>
 import axios from "axios";
 import global from "~/mixins.js/global.js";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   name: "home",
@@ -175,7 +211,15 @@ export default {
       surname: "",
       birth_date: "",
       phone_number: "",
-      shipping_address: {},
+      shipping_address: {
+        country: "",
+        region: "",
+        province: "",
+        locality: "",
+        route: "",
+        street_number: "",
+        postal_code: "",
+      },
       codice_fiscale: "",
       email: "",
       created_at: new Date().toISOString(),
@@ -202,10 +246,12 @@ export default {
       state ? this.expanded.splice(itemIndex, 1) : this.expanded.push(item);
     },
     addItem() {
+      this.resetMyStep();
       this.editedItem = Object.assign({}, this.defaultItem);
       this.dialogCreate = true;
     },
     editItem(item) {
+      this.resetMyStep();
       this.defaultSelected = [];
       this.editedIndex = this.users.indexOf(item);
       this.editedItem = Object.assign({}, item);
@@ -244,6 +290,7 @@ export default {
             message: response.data.message,
           };
           this.users.push(this.editedItem);
+
           this.dialogCreate = false;
         })
         .catch((error) => {
@@ -305,6 +352,12 @@ export default {
           };
           return error;
         });
+    },
+    ...mapActions({
+      resetMyStep: "step/resetMyStep",
+    }),
+    dialogClose() {
+      this.resetMyStep();
     },
   },
   computed: {

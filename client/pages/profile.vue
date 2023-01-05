@@ -11,17 +11,14 @@
       >{{ alert.message }}</v-alert
     >
     <v-card class="pa-4" flat>
-      <Edituser
-        :editedItem="editedItem"
-        @submit-form="editUser"
-        @close-modal="dialogEdit = false"
-      />
+      <Stepform :editedItem="editedItem" @submit-form="editUser" />
     </v-card>
   </div>
 </template>
 
 <script>
 import global from "~/mixins.js/global.js";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   middleware: "auth",
@@ -33,7 +30,15 @@ export default {
       surname: "",
       birth_date: "",
       phone_number: "",
-      shipping_address: {},
+      shipping_address: {
+        country: "",
+        region: "",
+        province: "",
+        locality: "",
+        route: "",
+        street_number: "",
+        postal_code: "",
+      },
       codice_fiscale: "",
       email: "",
       created_at: new Date().toISOString(),
@@ -42,6 +47,18 @@ export default {
       confirmpassword: "",
     },
   }),
+  methods: {
+    ...mapActions({
+      resetMyStep: "step/resetMyStep",
+    }),
+    testReset() {
+      this.resetMyStep();
+    },
+  },
+  beforeRouteLeave(to, from, next) {
+    this.resetMyStep();
+    next();
+  },
   mounted() {
     this.getCurrentUser();
   },
