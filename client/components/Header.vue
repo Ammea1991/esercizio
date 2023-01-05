@@ -46,11 +46,7 @@
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title v-if="item.title == 'Profile'"
-                >{{ getUserInfo.name.substring(0, 1) }}.
-                {{ getUserInfo.surname }}</v-list-item-title
-              >
-              <v-list-item-title v-else>{{ item.title }}</v-list-item-title>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </template>
@@ -61,9 +57,6 @@
       <v-btn icon @click="toggleTheme">
         <v-icon>mdi-invert-colors</v-icon>
       </v-btn>
-      <span v-if="this.$store.state.auth.loggedIn"
-        >Welcome! {{ getUserInfo.name }} {{ getUserInfo.surname }}</span
-      >
       <!-- <v-btn icon @click.stop="fixed = !fixed">
           <v-icon>mdi-minus</v-icon>
         </v-btn> -->

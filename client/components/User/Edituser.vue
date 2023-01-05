@@ -1,233 +1,240 @@
 <template>
   <validation-observer ref="observer" v-slot="{ invalid }">
     <v-form ref="form" lazy-validation @submit.prevent="$emit('submit-form')">
-      <v-row>
-        <v-col>
-          <validation-provider
-            v-slot="{ errors }"
-            name="Name"
-            rules="required|max:50"
-          >
-            <v-text-field
-              v-model="editedItem.name"
-              :counter="50"
-              :error-messages="errors"
-              clearable
-              outlined
-              prepend-icon="mdi-account"
-              label="Name"
-            ></v-text-field>
-          </validation-provider>
-        </v-col>
-        <v-col>
-          <validation-provider
-            v-slot="{ errors }"
-            name="Surname"
-            rules="required|max:50"
-          >
-            <v-text-field
-              v-model="editedItem.surname"
-              :counter="50"
-              :error-messages="errors"
-              clearable
-              outlined
-              label="Surname"
-            ></v-text-field>
-          </validation-provider>
-        </v-col>
-      </v-row>
-      <v-row><v-divider /></v-row>
-      <v-row>
-        <v-col
-          ><v-icon class="mr-2">mdi-map-marker</v-icon
-          ><input
-            ref="autocomplete"
-            placeholder="Search for location"
-            class="search-location"
-            onfocus="value = ''"
-            type="text" /></v-col
-      ></v-row>
-      <v-row>
-        <v-col
-          ><v-text-field
-            outlined
-            v-model="editedItem.shipping_address.country"
-            label="Country"
-          ></v-text-field
-        ></v-col>
-        <v-col
-          ><v-text-field
-            outlined
-            v-model="editedItem.shipping_address.region"
-            label="Region"
-          ></v-text-field
-        ></v-col>
-        <v-col>
-          <v-text-field
-            outlined
-            v-model="editedItem.shipping_address.province"
-            label="Province"
-          ></v-text-field
-        ></v-col>
-      </v-row>
-      <v-row>
-        <v-col
-          ><v-text-field
-            outlined
-            v-model="editedItem.shipping_address.locality"
-            label="locality"
-          ></v-text-field
-        ></v-col>
-        <v-col
-          ><v-text-field
-            outlined
-            v-model="editedItem.shipping_address.route"
-            label="route"
-          ></v-text-field
-        ></v-col>
-        <v-col>
-          <v-text-field
-            outlined
-            v-model="editedItem.shipping_address.street_number"
-            label="street_number"
-          ></v-text-field
-        ></v-col>
-
-        <v-col
-          ><v-text-field
-            outlined
-            v-model="editedItem.shipping_address.postal_code"
-            label="postal_code"
-          ></v-text-field
-        ></v-col>
-      </v-row>
-      <v-row><v-divider class="mt-2 mb-4" /></v-row>
-      <v-row>
-        <v-col
-          ><validation-provider
-            v-slot="{ errors }"
-            name="phone_number"
-            :rules="{
-              required: true,
-              digits: 10,
-              regex:
-                /^(0{1}[1-9]{1,3})[\s|\.|\-]?(\d{4,})|(\((00|\+)39\)|(00|\+)39)?(38[890]|34[7-90]|36[680]|33[3-90]|32[89])\d{7}$/,
-            }"
-          >
-            <v-text-field
-              outlined
-              v-model="editedItem.phone_number"
-              :counter="10"
-              :error-messages="errors"
-              prepend-icon="mdi-cellphone"
-              label="Phone Number"
-              required
-            ></v-text-field> </validation-provider
-        ></v-col>
-        <v-col>
-          <v-menu
-            v-model="menu2"
-            :close-on-content-click="false"
-            :nudge-right="40"
-            transition="scale-transition"
-            offset-y
-            min-width="auto"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <validation-provider
-                v-slot="{ errors }"
-                name="Birth Date"
-                :rules="{
-                  required: true,
-                }"
-              >
-                <v-text-field
-                  readonly
-                  outlined
-                  v-model="editedItem.birth_date"
-                  :error-messages="errors"
-                  clearable
-                  label="Birth date"
-                  prepend-icon="mdi-calendar"
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </validation-provider>
-            </template>
-            <v-date-picker
-              v-model="editedItem.birth_date"
-              @input="menu2 = false"
-            ></v-date-picker>
-          </v-menu>
-        </v-col>
-        <v-col>
-          <validation-provider
-            v-slot="{ errors }"
-            name="Codice fiscale"
-            :rules="{
-              required: true,
-              regex:
-                /^[A-Za-z]{6}[0-9LMNPQRSTUV]{2}[A-Za-z]{1}[0-9LMNPQRSTUV]{2}[A-Za-z]{1}[0-9LMNPQRSTUV]{3}[A-Za-z]{1}$/,
-            }"
-          >
-            <v-text-field
-              v-model="editedItem.codice_fiscale"
-              :error-messages="errors"
-              @input="
-                (val) => {
-                  if (val) {
-                    editedItem.codice_fiscale =
-                      editedItem.codice_fiscale.toUpperCase();
-                  }
-                }
-              "
-              outlined
-              clearable
-              label="Codice fiscale"
-              autocomplete="nope"
-            ></v-text-field>
-          </validation-provider>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <validation-provider
-            v-slot="{ errors }"
-            name="Email"
-            rules="required|email"
-          >
-            <v-text-field
-              v-model="editedItem.email"
-              :error-messages="errors"
-              outlined
-              clearable
-              prepend-icon="mdi-email"
-              label="Email"
-            ></v-text-field>
-          </validation-provider>
-        </v-col>
-      </v-row>
-      <v-card-actions>
+      <v-container>
         <v-row>
-          <v-col class="mt-20" align="right">
-            <v-btn
-              v-if="$route.path != '/subscription' && $route.path != '/profile'"
-              color="primary"
-              elevation="2"
-              @click="$emit('close-modal')"
-              >Close</v-btn
+          <v-col>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Name"
+              rules="required|max:50"
             >
-            <v-btn
-              class="ml-5"
-              color="primary"
-              elevation="2"
-              type="submit"
-              :disabled="invalid"
-              >Submit
-            </v-btn>
+              <v-text-field
+                v-model="editedItem.name"
+                :counter="50"
+                :error-messages="errors"
+                clearable
+                outlined
+                prepend-icon="mdi-account"
+                label="Name"
+              ></v-text-field>
+            </validation-provider>
+          </v-col>
+          <v-col>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Surname"
+              rules="required|max:50"
+            >
+              <v-text-field
+                v-model="editedItem.surname"
+                :counter="50"
+                :error-messages="errors"
+                clearable
+                outlined
+                label="Surname"
+              ></v-text-field>
+            </validation-provider>
           </v-col>
         </v-row>
-      </v-card-actions>
+        <v-row><v-divider /></v-row>
+        <v-row>
+          <v-col
+            ><v-icon class="mr-2">mdi-map-marker</v-icon
+            ><input
+              ref="autocomplete"
+              placeholder="Search for location"
+              class="search-location"
+              onfocus="value = ''"
+              type="text" /></v-col
+        ></v-row>
+        <v-row>
+          <v-col
+            ><v-text-field
+              outlined
+              v-model="editedItem.shipping_address.country"
+              label="Country"
+            ></v-text-field
+          ></v-col>
+          <v-col
+            ><v-text-field
+              outlined
+              v-model="editedItem.shipping_address.region"
+              label="Region"
+            ></v-text-field
+          ></v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-text-field
+              outlined
+              v-model="editedItem.shipping_address.province"
+              label="Province"
+            ></v-text-field
+          ></v-col>
+          <v-col
+            ><v-text-field
+              outlined
+              v-model="editedItem.shipping_address.locality"
+              label="locality"
+            ></v-text-field
+          ></v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            ><v-text-field
+              outlined
+              v-model="editedItem.shipping_address.route"
+              label="route"
+            ></v-text-field
+          ></v-col>
+          <v-col>
+            <v-text-field
+              outlined
+              v-model="editedItem.shipping_address.street_number"
+              label="street_number"
+            ></v-text-field
+          ></v-col>
+        </v-row>
+        <v-row><v-divider class="mt-2 mb-2" /></v-row>
+        <v-row>
+          <v-col
+            ><validation-provider
+              v-slot="{ errors }"
+              name="phone_number"
+              :rules="{
+                required: true,
+                digits: 10,
+                regex:
+                  /^(0{1}[1-9]{1,3})[\s|\.|\-]?(\d{4,})|(\((00|\+)39\)|(00|\+)39)?(38[890]|34[7-90]|36[680]|33[3-90]|32[89])\d{7}$/,
+              }"
+            >
+              <v-text-field
+                outlined
+                v-model="editedItem.phone_number"
+                :counter="10"
+                :error-messages="errors"
+                prepend-icon="mdi-cellphone"
+                label="Phone Number"
+                required
+              ></v-text-field> </validation-provider
+          ></v-col>
+          <v-col
+            ><v-text-field
+              outlined
+              v-model="editedItem.shipping_address.postal_code"
+              label="postal_code"
+            ></v-text-field
+          ></v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-menu
+              v-model="menu2"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <validation-provider
+                  v-slot="{ errors }"
+                  name="Birth Date"
+                  :rules="{
+                    required: true,
+                  }"
+                >
+                  <v-text-field
+                    readonly
+                    outlined
+                    v-model="editedItem.birth_date"
+                    :error-messages="errors"
+                    clearable
+                    label="Birth date"
+                    prepend-icon="mdi-calendar"
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </validation-provider>
+              </template>
+              <v-date-picker
+                v-model="editedItem.birth_date"
+                @input="menu2 = false"
+              ></v-date-picker>
+            </v-menu>
+          </v-col>
+          <v-col>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Codice fiscale"
+              :rules="{
+                required: true,
+                regex:
+                  /^[A-Za-z]{6}[0-9LMNPQRSTUV]{2}[A-Za-z]{1}[0-9LMNPQRSTUV]{2}[A-Za-z]{1}[0-9LMNPQRSTUV]{3}[A-Za-z]{1}$/,
+              }"
+            >
+              <v-text-field
+                v-model="editedItem.codice_fiscale"
+                :error-messages="errors"
+                @input="
+                  (val) => {
+                    if (val) {
+                      editedItem.codice_fiscale =
+                        editedItem.codice_fiscale.toUpperCase();
+                    }
+                  }
+                "
+                outlined
+                clearable
+                label="Codice fiscale"
+                autocomplete="nope"
+              ></v-text-field>
+            </validation-provider>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <validation-provider
+              v-slot="{ errors }"
+              name="Email"
+              rules="required|email"
+            >
+              <v-text-field
+                v-model="editedItem.email"
+                :error-messages="errors"
+                outlined
+                clearable
+                prepend-icon="mdi-email"
+                label="Email"
+              ></v-text-field>
+            </validation-provider>
+          </v-col>
+        </v-row>
+        <v-card-actions>
+          <v-row>
+            <v-col class="mt-20" align="right">
+              <v-btn
+                v-if="
+                  $route.path != '/subscription' && $route.path != '/profile'
+                "
+                color="primary"
+                elevation="2"
+                @click="$emit('close-modal')"
+                >Close</v-btn
+              >
+              <v-btn
+                class="ml-5"
+                color="primary"
+                elevation="2"
+                type="submit"
+                :disabled="invalid"
+                >Submit
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-actions>
+      </v-container>
     </v-form>
   </validation-observer>
 </template>

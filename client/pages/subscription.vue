@@ -1,7 +1,7 @@
 <template>
   <!-- <Notification :message="error" v-if="error" /> -->
 
-  <v-card class="pa-6" elevation="5">
+  <v-card class="pa-2">
     <CreateUser :editedItem="editedItem" @submit-form="subscribeUser" />
   </v-card>
 </template>

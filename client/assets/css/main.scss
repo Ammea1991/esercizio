@@ -65,6 +65,10 @@ a {
   cursor: pointer;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .bookmark{
   cursor: pointer;
 }
@@ -75,7 +79,7 @@ a {
   border-radius: 4px;
   margin: 15px 0px 15px 0px;
   padding: 15px 15px 15px 15px;
-  width: 500px;
+  width: 80%;
   color: var(--color);
 
 }

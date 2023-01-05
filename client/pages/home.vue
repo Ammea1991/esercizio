@@ -40,18 +40,17 @@
       </template>
       <template v-slot:top>
         <v-toolbar flat>
-          <v-toolbar-title class="pa-5">User admin</v-toolbar-title>
           <v-text-field
-            class="pa-10"
+            class="pa-2"
             v-model="search"
             append-icon="mdi-magnify"
             label="Search"
             single-line
             hide-details
           ></v-text-field>
-          <v-card-actions class="pa-10">
-            <div class="container fluid">
-              <v-row>
+          <v-card-actions class="pa-6">
+            <v-row>
+              <v-col align="right">
                 <v-btn
                   title="Create new user"
                   color="primary"
@@ -60,8 +59,8 @@
                 >
                   Add user
                 </v-btn>
-              </v-row>
-            </div>
+              </v-col>
+            </v-row>
           </v-card-actions>
         </v-toolbar>
       </template>
@@ -293,6 +292,8 @@ export default {
             show: true,
             message: response.data.message,
           };
+          if (this.getUserInfo.email === this.editedItem.email)
+            this.$auth.logout();
           this.users.splice(this.editedIndex, 1);
           this.dialogDelete = false;
         })
@@ -304,6 +305,11 @@ export default {
           };
           return error;
         });
+    },
+  },
+  computed: {
+    getUserInfo() {
+      return this.$store.getters.getUserInfo;
     },
   },
   mounted() {
