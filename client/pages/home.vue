@@ -97,15 +97,6 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
-      <!-- <v-card class="pa-6">
-       <CreateUser
-          transition="fade-transition"
-          :editedItem="editedItem"
-          @submit-form="createUser"
-          @close-modal="dialogCreate = false"
-        /> 
-        
-      </v-card>-->
       <v-card>
         <Stepform
           :editedItem="editedItem"
@@ -122,13 +113,6 @@
       hide-overlay
       max-width="800px"
     >
-      <!-- <v-card class="pa-6">
-        <Edituser
-          :editedItem="editedItem"
-          @submit-form="editUser"
-          @close-modal="dialogEdit = false"
-        />
-      </v-card> -->
       <v-card>
         <Stepform
           :editedItem="editedItem"
@@ -184,7 +168,7 @@
 
 <script>
 import axios from "axios";
-import global from "~/mixins.js/global.js";
+import global from "~/mixins/global.js";
 import { mapActions, mapMutations, mapState } from "vuex";
 
 export default {
@@ -198,9 +182,6 @@ export default {
     pageCount: 0,
     itemsPerPage: 10,
     expanded: [],
-    dialogCreate: false,
-    dialogDelete: false,
-    dialogEdit: false,
     users: [],
     loading: true,
     editedItem: {
@@ -248,7 +229,6 @@ export default {
 
       this.editedItem = Object.assign(this.editedItem, this.defaultItem);
       this.$store.commit("modal/setModalCreate", true);
-      //this.dialogCreate = true;
     },
     editItem(item) {
       this.resetModals();

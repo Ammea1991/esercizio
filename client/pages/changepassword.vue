@@ -17,8 +17,7 @@
 </template>
 
 <script>
-//import Notification from "~/components/Notification";
-import global from "~/mixins.js/global.js";
+import global from "~/mixins/global.js";
 
 export default {
   mixins: [global],

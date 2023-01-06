@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import global from "~/mixins.js/global.js";
+import global from "~/mixins/global.js";
 
 export default {
   name: "Editpassword",

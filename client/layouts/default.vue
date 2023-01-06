@@ -11,12 +11,12 @@
 
 <script>
 import Vue from "vue";
-import global from "~/mixins.js/global.js";
+import global from "~/mixins/global.js";
 
 export default {
   data() {
     return {
-      title: "Streaming Meazza 2",
+      title: "Esercizio Meazza",
     };
   },
   mixins: [global],

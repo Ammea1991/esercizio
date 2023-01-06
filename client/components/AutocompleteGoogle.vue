@@ -1,10 +1,4 @@
 <template>
-  <!-- <v-card
-        class="pa-2"
-        v-bind:class="{ 'fade-in': local_step === 2 }"
-        v-if="local_step === 2"
-        v-show="local_step === 2"
-      > -->
   <v-card class="pa-2" tile flat>
     <div class="d-flex justify-center">
       <v-tooltip left v-if="!modalCreate && $route.path != '/subscription'">
@@ -138,7 +132,7 @@
 </template>
 
 <script>
-import global from "~/mixins.js/global.js";
+import global from "~/mixins/global.js";
 import { mapState, mapMutations } from "vuex";
 import { maps } from "googlemaps";
 
@@ -197,49 +191,6 @@ export default {
         postal_code: postal_code ? postal_code.long_name : "",
       };
     });
-
-    // this.autocomplete = new google.maps.places.Autocomplete(
-    //   this.$refs.autocomplete,
-    //   { types: ["geocode"] }
-    // );
-    // this.autocomplete.addListener("place_changed", () => {
-    //   debugger;
-
-    //   console.log(this.editedItem.shipping_address);
-    // });
   },
 };
 </script>
-<!-- 
-  <template>
-    <v-autocomplete
-      v-model="location"
-      :items="locations"
-      :search-input.sync="search"
-      item-text="description"
-      item-value="place_id"
-      :loading="loading"
-    ></v-autocomplete>
-  </template>
-  
-  <script>
-    export default {
-      data() {
-        return {
-          location: null,
-          locations: [],
-          search: '',
-          loading: false
-        }
-      },
-      watch: {
-        search(val) {
-          this.loading = true;
-          // Esegui la ricerca con l'autocomplete di Google Maps qui
-          // Popola la proprietà "locations" con i risultati ottenuti
-          this.loading = false;
-        }
-      }
-    }
-  </script>
-   -->

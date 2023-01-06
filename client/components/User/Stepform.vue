@@ -384,7 +384,7 @@
 </template>
 
 <script>
-import global from "~/mixins.js/global.js";
+import global from "~/mixins/global.js";
 import { mapState, mapMutations } from "vuex";
 import { maps } from "googlemaps";
 

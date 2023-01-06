@@ -8,7 +8,6 @@
       :type="alert.type"
       >{{ alert.message }}</v-alert
     >
-    <!-- <Notification :message="error" v-if="error" /> -->
     <v-card class="ma-auto" max-width="500">
       <v-card-text>
         <v-container>
@@ -69,8 +68,7 @@
 </template>
 
 <script>
-//import Notification from "~/components/Notification";
-import global from "~/mixins.js/global.js";
+import global from "~/mixins/global.js";
 
 export default {
   mixins: [global],
