@@ -55,9 +55,16 @@
 
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click="toggleTheme">
-        <v-icon>mdi-invert-colors</v-icon>
-      </v-btn>
+      <transition name="fade">
+        <v-btn
+          icon
+          @click="toggleTheme"
+          v-bind:class="{ 'fade-in': toggleTheme }"
+          v-if="toggleTheme"
+        >
+          <v-icon>mdi-invert-colors</v-icon>
+        </v-btn>
+      </transition>
       <v-spacer />
       <v-img
         :lazy-src="logo"
@@ -89,6 +96,7 @@
 
 <script>
 import { mapMutations } from "vuex";
+
 export default {
   name: "Header",
   data() {
@@ -126,7 +134,6 @@ export default {
     toggleTheme() {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       localStorage.dark_theme = this.$vuetify.theme.dark;
-      this.$store.commit("TOGGLE_THEME", this.$vuetify.theme.dark);
     },
     async logout() {
       await this.$auth.logout(); // this method will logout the user and make token not valid

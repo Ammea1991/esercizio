@@ -1,6 +1,7 @@
 export const state = () => ({
-    step: 1
+    step: 1,
 });
+
 
 export const mutations = {
     resetMyStep(state) {
@@ -9,16 +10,16 @@ export const mutations = {
     setMyStep(state, value) {
         state.step = value;
     },
-    setNextMyStep(state, value) {
+    setNextMyStep(state) {
         state.step++;
     },
-    setPrevMyStep(state, value) {
+    setPrevMyStep(state) {
         state.step--;
-    }
+    },
 };
 
 export const actions = {
     resetMyStep({ commit }) {
         commit('resetMyStep');
-    }
+    },
 };

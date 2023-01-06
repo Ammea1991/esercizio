@@ -91,7 +91,7 @@
       </template>
     </v-data-table>
     <v-dialog
-      v-model="dialogCreate"
+      v-model="openModalCreate"
       max-width="800px"
       fullscreen
       hide-overlay
@@ -109,16 +109,15 @@
       <v-card>
         <Stepform
           :editedItem="editedItem"
-          :dialogCreate="dialogCreate"
           @submit-form="createUser"
-          @close-modal="dialogCreate = false"
+          @close-modal="closeModalCreate"
         />
       </v-card>
     </v-dialog>
 
     <v-dialog
       transition="dialog-bottom-transition"
-      v-model="dialogEdit"
+      v-model="openModalEdit"
       fullscreen
       hide-overlay
       max-width="800px"
@@ -133,18 +132,15 @@
       <v-card>
         <Stepform
           :editedItem="editedItem"
-          :dialogEdit="dialogEdit"
           @submit-form="editUser"
-          @close-modal="dialogEdit = false"
+          @close-modal="closeModalEdit"
         />
       </v-card>
     </v-dialog>
     <v-dialog
-      v-model="dialogDelete"
+      v-model="openModalDelete"
       max-width="800px"
       transition="dialog-bottom-transition"
-      fullscreen
-      hide-overlay
     >
       <v-card class="pa-4">
         <v-card-title class="text-h5"
@@ -155,9 +151,8 @@
             large
             width="20%"
             class="mr-5 arrow-prev"
-            color="primary"
             elevation="2"
-            @click="dialogDelete = false"
+            @click="closeModalDelete"
             >Close</v-btn
           >
           <v-spacer />
@@ -190,7 +185,7 @@
 <script>
 import axios from "axios";
 import global from "~/mixins.js/global.js";
-import { mapActions, mapMutations } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 
 export default {
   name: "home",
@@ -248,21 +243,29 @@ export default {
       state ? this.expanded.splice(itemIndex, 1) : this.expanded.push(item);
     },
     addItem() {
+      this.resetModals();
       this.resetMyStep();
-      this.editedItem = Object.assign({}, this.defaultItem);
-      this.dialogCreate = true;
+
+      this.editedItem = Object.assign(this.editedItem, this.defaultItem);
+      this.$store.commit("modal/setModalCreate", true);
+      //this.dialogCreate = true;
     },
     editItem(item) {
+      this.resetModals();
       this.resetMyStep();
+
       this.defaultSelected = [];
       this.editedIndex = this.users.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      this.dialogEdit = true;
+      this.$store.commit("modal/setModalEdit", true);
     },
     deleteItem(item) {
+      this.resetModals();
+      this.resetMyStep();
+
       this.editedIndex = this.users.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
+      this.$store.commit("modal/setModalDelete", true);
     },
     getFromSearch() {
       const params = { q: this.search };
@@ -281,28 +284,35 @@ export default {
         });
     },
     async createUser() {
-      await axios
-        .post("http://localhost:3002/api/auth/signup", {
-          user: this.editedItem,
-        })
-        .then((response) => {
-          this.alert = {
-            type: "success",
-            show: true,
-            message: response.data.message,
-          };
-          this.users.push(this.editedItem);
-
-          this.dialogCreate = false;
-        })
-        .catch((error) => {
-          this.alert = {
-            type: "error",
-            show: true,
-            message: error.response.data.message,
-          };
-          return error;
-        });
+      if (this.editedItem.password === this.editedItem.confirmpassword) {
+        await axios
+          .post("http://localhost:3002/api/auth/signup", {
+            user: this.editedItem,
+          })
+          .then((response) => {
+            this.alert = {
+              type: "success",
+              show: true,
+              message: response.data.message,
+            };
+            this.users.push(this.editedItem);
+            this.closeModalCreate();
+          })
+          .catch((error) => {
+            this.alert = {
+              type: "error",
+              show: true,
+              message: error.response.data.message,
+            };
+            return error;
+          });
+      } else {
+        this.alert = {
+          type: "error",
+          show: true,
+          message: "Passowrd does not match",
+        };
+      }
     },
     async editUser() {
       await axios
@@ -318,7 +328,7 @@ export default {
           };
           this.users.push(this.editedItem);
           this.users.splice(this.editedIndex, 1);
-          this.dialogEdit = false;
+          this.closeModalEdit();
         })
         .catch((error) => {
           this.alert = {
@@ -344,7 +354,7 @@ export default {
           if (this.getUserInfo.email === this.editedItem.email)
             this.$auth.logout();
           this.users.splice(this.editedIndex, 1);
-          this.dialogDelete = false;
+          this.closeModalDelete();
         })
         .catch((error) => {
           this.alert = {
@@ -355,14 +365,34 @@ export default {
           return error;
         });
     },
+    closeModalDelete() {
+      this.resetMyStep();
+      this.$store.commit("modal/setModalDelete", false);
+    },
+    closeModalEdit() {
+      this.resetMyStep();
+      this.$store.commit("modal/setModalEdit", false);
+    },
+    closeModalCreate() {
+      this.resetMyStep();
+      this.$store.commit("modal/setModalCreate", false);
+    },
     ...mapActions({
       resetMyStep: "step/resetMyStep",
+      resetModals: "modal/resetModals",
     }),
-    dialogClose() {
-      this.resetMyStep();
-    },
+    ...mapMutations({
+      setModalDelete: "modal/setModalDelete",
+      setModalEdit: "modal/setModalEdit",
+      setModalCreate: "modal/setModalCreate",
+    }),
   },
   computed: {
+    ...mapState({
+      openModalDelete: (state) => state.modal.modalDelete,
+      openModalEdit: (state) => state.modal.modalEdit,
+      openModalCreate: (state) => state.modal.modalCreate,
+    }),
     getUserInfo() {
       return this.$store.getters.getUserInfo;
     },

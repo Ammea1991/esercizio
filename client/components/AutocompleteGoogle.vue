@@ -7,7 +7,7 @@
       > -->
   <v-card class="pa-2" tile flat>
     <div class="d-flex justify-center">
-      <v-tooltip bottom>
+      <v-tooltip left v-if="!modalCreate && $route.path != '/subscription'">
         <template v-slot:activator="{ on }">
           <v-icon v-on="on" large>mdi-account-question</v-icon>
         </template>
@@ -157,6 +157,11 @@ export default {
     editedItem: {
       type: Object,
     },
+  },
+  computed: {
+    ...mapState({
+      modalCreate: (state) => state.modal.modalCreate,
+    }),
   },
   mounted() {
     const input = this.$refs.googleAutocomplete;

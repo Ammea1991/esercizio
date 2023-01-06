@@ -1,11 +1,10 @@
 <template>
-  <validation-observer ref="observer" v-slot="{ invalid }">
-    <v-form ref="form" lazy-validation @submit.prevent="$emit('submit-form')">
+  <v-form ref="form" lazy-validation @submit.prevent="$emit('submit-form')">
+    <validation-observer ref="observer" v-slot="{ invalid }">
       <div class="pa-4">
         <div class="register-stepper">
           <div
             class="step"
-            @click.prevent="changeStep(1)"
             :class="{
               'step-active': local_step === 1,
               'step-done': local_step > 1,
@@ -15,7 +14,6 @@
           </div>
           <div
             class="step"
-            @click.prevent="changeStep(2)"
             :class="{
               'step-active': local_step === 2,
               'step-done': local_step > 2,
@@ -25,7 +23,6 @@
           </div>
           <div
             class="step"
-            @click.prevent="changeStep(3)"
             :class="{
               'step-active': local_step === 3,
               'step-done': local_step > 3,
@@ -43,7 +40,10 @@
             v-show="local_step === 1"
           >
             <div class="d-flex justify-center">
-              <v-tooltip bottom>
+              <v-tooltip
+                left
+                v-if="!modalCreate && $route.path != '/subscription'"
+              >
                 <template v-slot:activator="{ on }">
                   <v-icon v-on="on" large>mdi-account-question</v-icon>
                 </template>
@@ -161,6 +161,7 @@
                         <v-text-field
                           readonly
                           outlined
+                          :max="date"
                           v-model="editedItem.birth_date"
                           :error-messages="errors"
                           clearable
@@ -173,6 +174,7 @@
                     </template>
                     <v-date-picker
                       v-model="editedItem.birth_date"
+                      :max="date"
                       @input="menu2 = false"
                     ></v-date-picker>
                   </v-menu>
@@ -193,6 +195,7 @@
                 class="arrow-next"
                 color="primary"
                 elevation="2"
+                v-bind:disabled="invalid"
               >
                 Next
               </v-btn>
@@ -208,78 +211,6 @@
             v-show="local_step === 2"
           >
             <AutocompleteGoogle :editedItem="editedItem" />
-            <!-- <v-card-title class="font-italic flex-column">
-              Shipping address
-            </v-card-title>
-            <v-card-text>
-              <v-row>
-                <v-col cols="12" sm="12">
-                  <input type="text" ref="inputGoogle" />
-                  <input
-                    ref="autocomplete"
-                    placeholder="Search for location"
-                    class="search-location"
-                    onfocus="value = ''"
-                    type="text"
-                    prepend-icon="mdi-map-marker"
-                  />
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="4">
-                  <v-text-field
-                    outlined
-                    v-model="editedItem.shipping_address.country"
-                    label="Country"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="4">
-                  <v-text-field
-                    outlined
-                    v-model="editedItem.shipping_address.region"
-                    label="Region"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="4">
-                  <v-text-field
-                    outlined
-                    v-model="editedItem.shipping_address.province"
-                    label="Province"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="3">
-                  <v-text-field
-                    outlined
-                    v-model="editedItem.shipping_address.locality"
-                    label="locality"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="3">
-                  <v-text-field
-                    outlined
-                    v-model="editedItem.shipping_address.route"
-                    label="route"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="3">
-                  <v-text-field
-                    outlined
-                    v-model="editedItem.shipping_address.street_number"
-                    label="street_number"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="3">
-                  <v-text-field
-                    outlined
-                    v-model="editedItem.shipping_address.postal_code"
-                    label="postal_code"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card-text> -->
-
             <v-card-actions class="centered-button">
               <v-btn
                 v-if="
@@ -304,6 +235,7 @@
                 class="arrow-next"
                 color="primary"
                 elevation="2"
+                v-bind:disabled="invalid"
               >
                 Next
               </v-btn>
@@ -319,7 +251,10 @@
             v-show="local_step === 3"
           >
             <div class="d-flex justify-center">
-              <v-tooltip bottom>
+              <v-tooltip
+                left
+                v-if="!modalCreate && $route.path != '/subscription'"
+              >
                 <template v-slot:activator="{ on }">
                   <v-icon v-on="on" large>mdi-account-question</v-icon>
                 </template>
@@ -334,6 +269,7 @@
                     v-slot="{ errors }"
                     name="Email"
                     rules="required|email"
+                    autocomplete="off"
                   >
                     <v-text-field
                       v-model="editedItem.email"
@@ -341,14 +277,14 @@
                       outlined
                       clearable
                       prepend-icon="mdi-email"
+                      type="text"
+                      autocomplete="off"
                       label="Email"
                     ></v-text-field>
                   </validation-provider>
                 </v-col>
               </v-row>
-              <v-row
-                v-if="$route.path == '/subscription' || $route.path == '/home'"
-              >
+              <v-row v-if="$route.path == '/subscription' || modalCreate">
                 <v-col cols="12" sm="6">
                   <validation-provider
                     v-slot="{ errors }"
@@ -369,10 +305,10 @@
                       name="input-10-1"
                       label="Password"
                       @click:append="show_psw = !show_psw"
-                      autocomplete="nope"
+                      autocomplete="off"
                     >
                       <template v-slot:prepend>
-                        <v-tooltip bottom>
+                        <v-tooltip left v-if="!modalCreate">
                           <template v-slot:activator="{ on }">
                             <v-icon v-on="on"> mdi-help-circle-outline </v-icon>
                           </template>
@@ -398,7 +334,6 @@
                       :error-messages="errors"
                       outlined
                       clearable
-                      :rules="confirmPasswordRules"
                       :append-icon="show_confpsw ? 'mdi-eye' : 'mdi-eye-off'"
                       :type="show_confpsw ? 'text' : 'password'"
                       name="input-10-1"
@@ -430,12 +365,13 @@
               >
                 Previous
               </v-btn>
+
               <v-btn
                 large
                 color="primary"
                 elevation="2"
                 type="submit"
-                :disabled="invalid"
+                v-bind:disabled="invalid"
               >
                 Submit
               </v-btn>
@@ -443,8 +379,8 @@
           </v-card>
         </Transition>
       </div>
-    </v-form>
-  </validation-observer>
+    </validation-observer>
+  </v-form>
 </template>
 
 <script>
@@ -455,70 +391,33 @@ import { maps } from "googlemaps";
 export default {
   name: "Stepform",
   mixins: [global],
-  data() {
-    return {
-      confirmPasswordRules: [
-        (value) =>
-          value === this.editedItem.password || "Passwords does not match.",
-      ],
-    };
-  },
+  data: () => ({
+    date: new Date().toISOString().substr(0, 10),
+    min: new Date(Date.now() - 315569260000).toISOString().substr(0, 10),
+    invalid: false,
+  }),
   props: {
     editedItem: {
       type: Object,
     },
   },
-  mounted() {
-    const input = this.$refs.inputGoogle;
-    const autocomplete = new google.maps.places.Autocomplete(input);
-
-    autocomplete.addListener("place_changed", () => {
-      // Esegui il test del servizio di autocomplete di Google Maps qui
-    });
-
-    this.autocomplete = new google.maps.places.Autocomplete(
-      this.$refs.autocomplete,
-      { types: ["geocode"] }
-    );
-    this.autocomplete.addListener("place_changed", () => {
-      debugger;
-      let place = this.autocomplete.getPlace();
-      let ac = place.address_components;
-      console.log(ac);
-      let street_number = ac.find((o) => o.types.includes("street_number"));
-      let route = ac.find((o) => o.types.includes("route"));
-      let locality = ac.find((o) => o.types.includes("locality"));
-      let administrative_area_level_2 = ac.find((o) =>
-        o.types.includes("administrative_area_level_2")
-      );
-      let administrative_area_level_1 = ac.find((o) =>
-        o.types.includes("administrative_area_level_1")
-      );
-      let country = ac.find((o) => o.types.includes("country"));
-      let postal_code = ac.find((o) => o.types.includes("postal_code"));
-
-      this.editedItem.shipping_address = {
-        country: country ? country.long_name : "",
-        region: administrative_area_level_1
-          ? administrative_area_level_1.long_name
-          : "",
-        province: administrative_area_level_2
-          ? administrative_area_level_2.short_name
-          : "",
-        locality: locality ? locality.long_name : "",
-        route: route ? route.long_name : "",
-        street_number: street_number ? street_number.long_name : "",
-        postal_code: postal_code ? postal_code.long_name : "",
-      };
-      console.log(this.editedItem.shipping_address);
-    });
-  },
   computed: {
     ...mapState({
       local_step: (state) => state.step.step,
+      modalDelete: (state) => state.modal.modalDelete,
+      modaEdit: (state) => state.modal.modaEdit,
+      modalCreate: (state) => state.modal.modalCreate,
     }),
   },
   methods: {
+    toAllowedDates(val, index) {
+      const today = this.$moment(this.schedules[index].dayFrom, "YYYY-MM-DD");
+      const maxAllowedDate = today.clone().add(1, "days");
+      const currentDate = this.$moment(val);
+      return (
+        !today.isAfter(currentDate) && !currentDate.isAfter(maxAllowedDate)
+      );
+    },
     changeStep(param) {
       this.$store.commit("step/setMyStep", param);
     },

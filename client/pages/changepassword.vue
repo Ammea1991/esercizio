@@ -1,6 +1,7 @@
 <template>
   <!-- <Notification :message="error" v-if="error" /> -->
-  <v-card class="mx-auto" max-width="500">
+  <Loading v-if="showHideSpinner" />
+  <v-card v-else class="mx-auto" max-width="500">
     <v-alert
       outlined
       :value="alert.show"

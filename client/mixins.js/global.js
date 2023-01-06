@@ -1,5 +1,6 @@
 import moment from "moment";
 import axios from "axios";
+import { mapActions, mapMutations, mapState } from "vuex";
 import {
     extend,
     ValidationObserver,
@@ -93,20 +94,19 @@ export default {
         ],
         alert: { type: "error", show: false, message: "" },
         users: [],
-        dialog: false,
-        dialogDelete: false,
-        dialogEdit: false,
         menu2: false,
-        keep_for_shipping: true,
         user: [],
         password: "Password",
         show_psw: false,
         show_confpsw: false,
-        movies: [],
         totalUsers: 0,
         loading: true,
     }),
     methods: {
+        ...mapActions({
+            resetMyStep: "step/resetMyStep",
+            resetModals: "modal/resetModals",
+        }),
         async login() {
             await this.$auth.loginWith("local", {
                 data: this.loginData,
@@ -125,10 +125,6 @@ export default {
         submit() {
             this.$refs.observer.validate();
         },
-        closeDialog() {
-            this.show = false
-        },
-
         async getCurrentUser() {
             this.loading = true;
             const params = { email: this.$store.getters.getUserInfo.email };
@@ -161,13 +157,13 @@ export default {
                 });
         },
         async subscribeUser() {
-            this.closeDialog();
             var path = this.$route.path;
             await axios
                 .post("http://localhost:3002/api/auth/signup", {
                     user: this.editedItem,
                 })
                 .then((response) => {
+                    this.resetMyStep();
                     this.$router.push({
                         path: '/login'
                     })
@@ -177,25 +173,34 @@ export default {
                 });
         },
         async addUser() {
-            this.closeDialog();
-            var path = this.$route.path;
-            await axios
-                .post("http://localhost:3002/api/auth/signup", {
-                    user: this.editedItem,
-                })
-                .then((response) => {
-                    if (path === '/subscription') {
-                        this.$router.push({
-                            path: '/login'
-                        })
-                    }
-                    this.users.push(this.editedItem)
-                })
-                .catch((error) => {
-                    return error;
-                });
+            if (this.editedItem.password === this.editedItem.confirmpassword) {
+                var path = this.$route.path;
+                await axios
+                    .post("http://localhost:3002/api/auth/signup", {
+                        user: this.editedItem,
+                    })
+                    .then((response) => {
+                        this.users.push(this.editedItem)
+                        this.resetMyStep();
+                        if (path === '/subscription') {
+                            this.$router.push({
+                                path: '/login'
+                            })
+                        }
+                    })
+                    .catch((error) => {
+                        return error;
+                    });
+            } else {
+                this.alert = {
+                    type: "error",
+                    show: true,
+                    message: "Passowrd does not match",
+                };
+            }
         },
         async editUser() {
+
             await axios
                 .post("http://localhost:3002/api/auth/update", {
                     _id: this.editedItem._id,
@@ -209,7 +214,7 @@ export default {
                     };
                     this.users.push(this.editedItem);
                     this.users.splice(this.editedIndex, 1);
-                    this.dialogEdit = false;
+                    this.resetMyStep();
                 })
                 .catch((error) => {
                     this.alert = {
@@ -219,29 +224,39 @@ export default {
                     };
                     return error;
                 });
+
         },
         async editPsw() {
-            await axios
-                .post("http://localhost:3002/api/auth/changePsw", {
-                    email: this.editedItem.email,
-                    password: this.editedItem.confirmpassword,
-                })
-                .then((response) => {
-                    this.alert = {
-                        type: "success",
-                        show: true,
-                        message: response.data.message,
-                    };
-                })
-                .catch((error) => {
-                    this.alert = {
-                        type: "error",
-                        show: true,
-                        message: error.response.data.message,
-                    };
-                    return error;
-                });
-            this.users.splice(this.editedIndex, 1);
+            if (this.editedItem.password === this.editedItem.confirmpassword) {
+                await axios
+                    .post("http://localhost:3002/api/auth/changePsw", {
+                        email: this.editedItem.email,
+                        password: this.editedItem.confirmpassword,
+                    })
+                    .then((response) => {
+                        this.alert = {
+                            type: "success",
+                            show: true,
+                            message: response.data.message,
+                        };
+                    })
+                    .catch((error) => {
+                        this.alert = {
+                            type: "error",
+                            show: true,
+                            message: error.response.data.message,
+                        };
+                        return error;
+                    });
+                this.users.splice(this.editedIndex, 1);
+            } else {
+                this.alert = {
+                    type: "error",
+                    show: true,
+                    message: "Passowrd does not match",
+                };
+            }
+
         },
     },
     watch: {

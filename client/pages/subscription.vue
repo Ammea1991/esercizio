@@ -1,6 +1,7 @@
 <template>
   <!-- <Notification :message="error" v-if="error" /> -->
-  <div>
+  <Loading v-if="showHideSpinner" />
+  <div v-else>
     <Stepform :editedItem="editedItem" @submit-form="subscribeUser" />
   </div>
 </template>

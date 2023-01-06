@@ -18,7 +18,7 @@ export default {
       {
         hid: 'gtm-script1',
         src: "https://maps.googleapis.com/maps/api/js?key=AIzaSyBEEfWIb00rGqQGrcNfMd_513qOuarFKc8&libraries=places",
-        defer: false
+        defer: true
       },
     ],
     link: [
@@ -32,7 +32,7 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '@/assets/css/main.scss',
-    '@/assets/css/movie.scss',
+    '@/assets/css/step.scss',
   ],
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: ['~/plugins/vuelidate'],

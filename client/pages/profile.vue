@@ -51,9 +51,6 @@ export default {
     ...mapActions({
       resetMyStep: "step/resetMyStep",
     }),
-    testReset() {
-      this.resetMyStep();
-    },
   },
   beforeRouteLeave(to, from, next) {
     this.resetMyStep();

@@ -1,11 +1,11 @@
 <template>
-  <validation-observer ref="observer" v-slot="{ invalid }">
-    <v-form
-      ref="form"
-      lazy-validation
-      @submit.prevent="$emit('submit-form')"
-      @close.prevent="$emit('close-form')"
-    >
+  <v-form
+    ref="form"
+    lazy-validation
+    @submit.prevent="$emit('submit-form')"
+    @close.prevent="$emit('close-form')"
+  >
+    <validation-observer ref="observer" v-slot="{ invalid }">
       <v-row>
         <v-col>
           <validation-provider
@@ -44,7 +44,6 @@
               name="input-10-1"
               label="Password"
               @click:append="show_psw = !show_psw"
-              autocomplete="nope"
             ></v-text-field>
           </validation-provider>
         </v-col>
@@ -68,7 +67,6 @@
               name="input-10-1"
               label="Confirm password"
               @click:append="show_confpsw = !show_confpsw"
-              autocomplete="nope"
             ></v-text-field>
           </validation-provider>
         </v-col>
@@ -89,8 +87,8 @@
           </v-col>
         </v-row>
       </v-card-actions>
-    </v-form>
-  </validation-observer>
+    </validation-observer>
+  </v-form>
 </template>
 
 <script>
