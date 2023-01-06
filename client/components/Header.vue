@@ -66,7 +66,8 @@
         max-width="50"
         :src="logo"
       ></v-img>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-spacer />
+      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn icon @click.stop="miniVariant = !miniVariant">
         <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
       </v-btn>
@@ -77,7 +78,7 @@
         <v-icon>mdi-minus</v-icon>
       </v-btn>
 
-      <v-spacer />
+      <v-spacer /> -->
       <!-- <v-btn icon @click.stop="fixed = !fixed">
         <v-icon>mdi-minus</v-icon>
       </v-btn> -->

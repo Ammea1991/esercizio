@@ -41,7 +41,7 @@
       </v-card-text>
       <v-card-actions>
         <v-container>
-          <v-row>
+          <v-row class="mb-10">
             <v-col align="center"
               ><v-btn
                 large

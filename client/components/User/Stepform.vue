@@ -36,14 +36,22 @@
         </div>
         <Transition name="fade">
           <v-card
+            flat
             class="pa-2"
             v-bind:class="{ 'fade-in': local_step === 1 }"
             v-if="local_step === 1"
             v-show="local_step === 1"
           >
-            <v-card-title class="font-italic flex-column">
-              Personal data
-            </v-card-title>
+            <div class="d-flex justify-center">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-icon v-on="on" large>mdi-account-question</v-icon>
+                </template>
+                {{ editedItem.email }}
+              </v-tooltip>
+              <v-card-title class="font-italic"> Personal data </v-card-title>
+            </div>
+
             <v-card-text>
               <v-row>
                 <v-col cols="12" sm="4">
@@ -59,7 +67,7 @@
                       clearable
                       outlined
                       label="Name"
-                      prepend-inner-icon="mdi-card-account-details-outline"
+                      prepend-icon="mdi-card-account-details-outline"
                     ></v-text-field>
                   </validation-provider>
                 </v-col>
@@ -76,7 +84,7 @@
                       clearable
                       outlined
                       label="Surname"
-                      prepend-inner-icon="mdi-card-account-details-outline"
+                      prepend-icon="mdi-card-account-details-outline"
                     ></v-text-field>
                   </validation-provider>
                 </v-col>
@@ -104,7 +112,7 @@
                       outlined
                       clearable
                       label="Codice fiscale"
-                      prepend-inner-icon="mdi-card-account-details-outline"
+                      prepend-icon="mdi-card-account-details-outline"
                       autocomplete="nope"
                     ></v-text-field>
                   </validation-provider>
@@ -127,7 +135,7 @@
                       v-model="editedItem.phone_number"
                       :counter="10"
                       :error-messages="errors"
-                      prepend-inner-icon="mdi-cellphone"
+                      prepend-icon="mdi-cellphone"
                       label="Phone Number"
                       required
                     ></v-text-field>
@@ -157,7 +165,7 @@
                           :error-messages="errors"
                           clearable
                           label="Birth date"
-                          prepend-inner-icon="mdi-calendar"
+                          prepend-icon="mdi-calendar"
                           v-bind="attrs"
                           v-on="on"
                         ></v-text-field>
@@ -176,7 +184,6 @@
                 v-if="
                   $route.path != '/subscription' && $route.path != '/profile'
                 "
-                color="primary"
                 elevation="2"
                 @click="$emit('close-modal')"
                 >Close</v-btn
@@ -194,6 +201,7 @@
         </Transition>
         <Transition name="fade">
           <v-card
+            flat
             class="pa-2"
             v-bind:class="{ 'fade-in': local_step === 2 }"
             v-if="local_step === 2"
@@ -213,7 +221,7 @@
                     class="search-location"
                     onfocus="value = ''"
                     type="text"
-                    prepend-inner-icon="mdi-map-marker"
+                    prepend-icon="mdi-map-marker"
                   />
                 </v-col>
               </v-row>
@@ -278,7 +286,6 @@
                   $route.path != '/subscription' && $route.path != '/profile'
                 "
                 large
-                color="primary"
                 elevation="2"
                 @click="$emit('close-modal')"
                 >Close</v-btn
@@ -305,14 +312,21 @@
         </Transition>
         <Transition name="fade">
           <v-card
+            flat
             class="pa-2"
             v-bind:class="{ 'fade-in': local_step === 3 }"
             v-if="local_step === 3"
             v-show="local_step === 3"
           >
-            <v-card-title class="font-italic flex-column">
-              Login data
-            </v-card-title>
+            <div class="d-flex justify-center">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-icon v-on="on" large>mdi-account-question</v-icon>
+                </template>
+                {{ editedItem.email }}
+              </v-tooltip>
+              <v-card-title class="font-italic"> Login data </v-card-title>
+            </div>
             <v-card-text>
               <v-row>
                 <v-col cols="12" sm="12"
@@ -332,7 +346,9 @@
                   </validation-provider>
                 </v-col>
               </v-row>
-              <v-row v-if="$route.path == '/subscription'">
+              <v-row
+                v-if="$route.path == '/subscription' || $route.path == '/home'"
+              >
                 <v-col cols="12" sm="6">
                   <validation-provider
                     v-slot="{ errors }"
@@ -400,7 +416,6 @@
                   $route.path != '/subscription' && $route.path != '/profile'
                 "
                 large
-                color="primary"
                 elevation="2"
                 @click="$emit('close-modal')"
               >

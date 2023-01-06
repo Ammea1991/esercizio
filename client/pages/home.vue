@@ -109,6 +109,7 @@
       <v-card>
         <Stepform
           :editedItem="editedItem"
+          :dialogCreate="dialogCreate"
           @submit-form="createUser"
           @close-modal="dialogCreate = false"
         />
@@ -132,6 +133,7 @@
       <v-card>
         <Stepform
           :editedItem="editedItem"
+          :dialogEdit="dialogEdit"
           @submit-form="editUser"
           @close-modal="dialogEdit = false"
         />

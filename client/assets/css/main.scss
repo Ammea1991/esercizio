@@ -77,8 +77,6 @@ select:-webkit-autofill:focus {
   
   }
   
-  .pac-matched {}
-  
   .pac-item-query {
 	font-size: 14px;
 	color: #4b4b4b;
@@ -142,6 +140,19 @@ a {
 .bookmark{
   cursor: pointer;
 }
+
+.input-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-container i {
+    margin-right: 10px;
+  }
+  
+  .my-input {
+    width: 100%;
+  }
 
 .search-location{
   border: solid 1px;
@@ -242,6 +253,10 @@ $color-jungle: #193805;
 $font-montserrat: "Montserrat", sans-serif;
 $font-weight-bold: 700;
 
+.step-title{
+	font-size: 1.5rem !important;
+	text-align: center !important;
+}
 .register {
 	display: block;
 	color: var(--color);

@@ -5,40 +5,66 @@
         v-if="local_step === 2"
         v-show="local_step === 2"
       > -->
-  <v-card class="pa-2">
-    <v-card-title class="font-italic flex-column">
-      Shipping address
-    </v-card-title>
+  <v-card class="pa-2" tile flat>
+    <div class="d-flex justify-center">
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-icon v-on="on" large>mdi-account-question</v-icon>
+        </template>
+        {{ editedItem.email }}
+      </v-tooltip>
+      <v-card-title class="font-italic"> Shipping address </v-card-title>
+    </div>
     <v-card-text>
       <v-row>
         <v-col cols="12" sm="12">
-          <input
-            ref="googleAutocomplete"
-            placeholder="Search for location"
-            class="search-location"
-            onfocus="value = ''"
-            type="text"
-            prepend-inner-icon="mdi-map-marker"
-          />
+          <div class="input-container">
+            <v-icon>mdi-map-marker</v-icon>
+            <input
+              ref="googleAutocomplete"
+              placeholder="Search for location"
+              class="search-location"
+              onfocus="value = ''"
+              type="text"
+              prepend-inner-icon="mdi-map-marker"
+            />
+          </div>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" sm="4">
-          <v-text-field
-            outlined
-            v-model="editedItem.shipping_address.country"
-            label="Country"
-          ></v-text-field>
+          <validation-provider
+            v-slot="{ errors }"
+            name="Country"
+            rules="required"
+          >
+            <v-text-field
+              :error-messages="errors"
+              clearable
+              outlined
+              v-model="editedItem.shipping_address.country"
+              label="Country"
+            ></v-text-field>
+          </validation-provider>
+        </v-col>
+        <v-col cols="12" sm="4">
+          <validation-provider
+            v-slot="{ errors }"
+            name="Region"
+            rules="required"
+          >
+            <v-text-field
+              :error-messages="errors"
+              clearable
+              outlined
+              v-model="editedItem.shipping_address.region"
+              label="Region"
+            ></v-text-field>
+          </validation-provider>
         </v-col>
         <v-col cols="12" sm="4">
           <v-text-field
-            outlined
-            v-model="editedItem.shipping_address.region"
-            label="Region"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" sm="4">
-          <v-text-field
+            clearable
             outlined
             v-model="editedItem.shipping_address.province"
             label="Province"
@@ -47,32 +73,64 @@
       </v-row>
       <v-row>
         <v-col cols="12" sm="3">
-          <v-text-field
-            outlined
-            v-model="editedItem.shipping_address.locality"
-            label="locality"
-          ></v-text-field>
+          <validation-provider
+            v-slot="{ errors }"
+            name="Locality"
+            rules="required"
+          >
+            <v-text-field
+              :error-messages="errors"
+              clearable
+              outlined
+              v-model="editedItem.shipping_address.locality"
+              label="Locality"
+            ></v-text-field>
+          </validation-provider>
         </v-col>
         <v-col cols="12" sm="3">
-          <v-text-field
-            outlined
-            v-model="editedItem.shipping_address.route"
-            label="route"
-          ></v-text-field>
+          <validation-provider
+            v-slot="{ errors }"
+            name="Route"
+            rules="required"
+          >
+            <v-text-field
+              :error-messages="errors"
+              clearable
+              outlined
+              v-model="editedItem.shipping_address.route"
+              label="Route"
+            ></v-text-field>
+          </validation-provider>
         </v-col>
         <v-col cols="12" sm="3">
-          <v-text-field
-            outlined
-            v-model="editedItem.shipping_address.street_number"
-            label="street_number"
-          ></v-text-field>
+          <validation-provider
+            v-slot="{ errors }"
+            name="Street number"
+            rules="required"
+          >
+            <v-text-field
+              :error-messages="errors"
+              clearable
+              outlined
+              v-model="editedItem.shipping_address.street_number"
+              label="Street number"
+            ></v-text-field>
+          </validation-provider>
         </v-col>
         <v-col cols="12" sm="3">
-          <v-text-field
-            outlined
-            v-model="editedItem.shipping_address.postal_code"
-            label="postal_code"
-          ></v-text-field>
+          <validation-provider
+            v-slot="{ errors }"
+            name="Zip code"
+            rules="required"
+          >
+            <v-text-field
+              :error-messages="errors"
+              clearable
+              outlined
+              v-model="editedItem.shipping_address.postal_code"
+              label="Zip code"
+            ></v-text-field>
+          </validation-provider>
         </v-col>
       </v-row>
     </v-card-text>
@@ -105,7 +163,7 @@ export default {
     const autocomplete = new google.maps.places.Autocomplete(input);
 
     autocomplete.addListener("place_changed", () => {
-      let place = this.autocomplete.getPlace();
+      let place = autocomplete.getPlace();
       let ac = place.address_components;
       console.log(ac);
       let street_number = ac.find((o) => o.types.includes("street_number"));
