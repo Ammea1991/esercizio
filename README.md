@@ -1,5 +1,18 @@
-#rm -rf .git
-#sudo service docker start
-#sudo docker start
+## Build Setup
 
-#docker compose up
+# node < 16.19.0
+
+```bash
+#start server
+
+$ npm init
+$ npm install
+$ npm start
+
+#start client
+
+$ npm install
+$ npm run build
+$ npm start
+
+```
